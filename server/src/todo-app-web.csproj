@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>WarrenSoftware.Todo.Web</RootNamespace>
+    <RootNamespace>WarrenSoftware.TodoApp.Web</RootNamespace>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

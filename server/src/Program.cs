@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace WarrenSoftware.Todo.Web
+namespace WarrenSoftware.TodoApp.Web
 {
     public class Program
     {
