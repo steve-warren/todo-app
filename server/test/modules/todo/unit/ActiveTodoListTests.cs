@@ -16,7 +16,7 @@ namespace todo_app_test
         }
 
         [Fact]
-        public void List_Should_Accept_New_Name()
+        public void List_Should_Accept_New_Name_When_Renamed()
         {
             var list = new ActiveTodoList("a");
 

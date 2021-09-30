@@ -3,8 +3,9 @@ using WarrenSoftware.TodoApp.Core.Domain;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
 {
-    public class ActiveTodoList : Entity
+    public class ActiveTodoList : AggregateRoot
     {
+        #pragma warning disable IDE0052 // mapped to ef core shadow property
         private string _state = "";
 
         public ActiveTodoList(string name, int id = default)
@@ -27,11 +28,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         {
             _state = TodoListStates.Archived;
         }
-    }
 
-    public static class TodoListStates
-    {
-        public const string Active = "Active";
-        public const string Archived = "Archived";
+        public TodoItem NewItem(string name)
+        {
+            return new TodoItem(name, Id);
+        }
     }
 }
