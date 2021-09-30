@@ -1,21 +1,13 @@
 using System;
-using WarrenSoftware.TodoApp.Core.Domain;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
 {
-    public class ActiveTodoList : AggregateRoot
+    public class ActiveTodoList : TodoList
     {
-        #pragma warning disable IDE0052 // mapped to ef core shadow property
-        private string _state = "";
-
-        public ActiveTodoList(string name, int id = default)
+        public ActiveTodoList(string name, int id = default) : base(id)
         {
             Name = name;
-            Id = id;
-            _state = TodoListStates.Active;
         }
-
-        private ActiveTodoList() { }
 
         public string Name { get; private set; } = "";
 

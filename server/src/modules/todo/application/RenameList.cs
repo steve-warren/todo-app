@@ -26,6 +26,8 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
         protected override async Task Handle(RenameListCommand request, CancellationToken cancellationToken)
         {
             var list = await _repository.FindByIdAsync(request.ListId);
+
+            if (list is null) return;
             
             list.Rename(request.NewName);
 
