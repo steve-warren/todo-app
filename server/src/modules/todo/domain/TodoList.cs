@@ -7,12 +7,9 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         #pragma warning disable IDE0052 // mapped to ef core shadow property
         protected string _state = "";
 
-        protected TodoList(int id = default)
+        protected TodoList()
         {
-            Id = id;
             _state = TodoListStates.Active;
         }
-
-        protected TodoList() { }
     }
 }

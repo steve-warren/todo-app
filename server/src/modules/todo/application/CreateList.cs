@@ -14,17 +14,20 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     public class CreateListHandler : IRequestHandler<CreateListCommand, int>
     {
         private readonly IActiveTodoListRepository _repository;
+        private readonly ITodoListIdentityService _identityService;
         private readonly IUnitOfWork _uow;
 
-        public CreateListHandler(IActiveTodoListRepository repository, IUnitOfWork uow)
+        public CreateListHandler(IActiveTodoListRepository repository, ITodoListIdentityService identityService,  IUnitOfWork uow)
         {
             _repository = repository;
+            _identityService = identityService;
             _uow = uow;
         }
 
         public async Task<int> Handle(CreateListCommand request, CancellationToken cancellationToken)
         {
-            var list = new ActiveTodoList(request.Name);
+            var id = await _identityService.NextIdAsync(cancellationToken);
+            var list = new ActiveTodoList(request.Name, id);
             await _repository.AddAsync(list);
             await _uow.SaveChangesAsync(cancellationToken);
 

@@ -7,9 +7,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
     {
         private readonly List<int> _items;
 
-        public ActiveTodoList(string name, int id = default) : base(id)
+        public ActiveTodoList(string name, int id)
         {
             Name = name;
+            Id = id;
             _items = new();
         }
 
