@@ -28,7 +28,8 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
         {
             var id = await _identityService.NextIdAsync(cancellationToken);
             var list = new ActiveTodoList(request.Name, id);
-            await _repository.AddAsync(list);
+            _repository.Add(list);
+
             await _uow.SaveChangesAsync(cancellationToken);
 
             return list.Id;

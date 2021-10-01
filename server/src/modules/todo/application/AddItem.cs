@@ -36,7 +36,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             var id = await _identityService.NextIdAsync(cancellationToken);
             var item = new TodoItem(name: request.ItemName, listId: request.ListId, id: id);
 
-            await _items.AddAsync(item);
+            _items.Add(item);
 
             await _uow.SaveChangesAsync(cancellationToken);
 
