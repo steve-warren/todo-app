@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
 {
-    public interface ITodoItemRepository
+    public interface IIncompleteTodoItemRepository
     {
-        Task<TodoItem> FindByIdAsync(int id);
-        void Add(TodoItem item);
+        Task<IncompleteTodoItem> FindByIdAsync(int id);
+        void Add(IncompleteTodoItem item);
     }
 }

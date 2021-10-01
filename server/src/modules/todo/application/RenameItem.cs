@@ -14,10 +14,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
 
     public class RenameItemHandler : AsyncRequestHandler<RenameItemCommand>
     {
-        private readonly ITodoItemRepository _items;
+        private readonly IIncompleteTodoItemRepository _items;
         private readonly IUnitOfWork _uow;
 
-        public RenameItemHandler(ITodoItemRepository items, IUnitOfWork uow)
+        public RenameItemHandler(IIncompleteTodoItemRepository items, IUnitOfWork uow)
         {
             _items = items; 
             _uow = uow;

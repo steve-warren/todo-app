@@ -15,11 +15,11 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     public class AddItemHandler : IRequestHandler<AddItemCommand, int>
     {
         private readonly IActiveTodoListRepository _lists;
-        private readonly ITodoItemRepository _items;
+        private readonly IIncompleteTodoItemRepository _items;
         private readonly ITodoItemIdentityService _identityService;
         private readonly IUnitOfWork _uow;
 
-        public AddItemHandler(IActiveTodoListRepository lists, ITodoItemRepository items, ITodoItemIdentityService identityService, IUnitOfWork uow)
+        public AddItemHandler(IActiveTodoListRepository lists, IIncompleteTodoItemRepository items, ITodoItemIdentityService identityService, IUnitOfWork uow)
         {
             _lists = lists;
             _items = items;
@@ -34,7 +34,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             if (list is null) return -1;
 
             var id = await _identityService.NextIdAsync(cancellationToken);
-            var item = new TodoItem(name: request.ItemName, listId: request.ListId, id: id);
+            var item = new IncompleteTodoItem(name: request.ItemName, listId: request.ListId, id: id);
 
             _items.Add(item);
 
