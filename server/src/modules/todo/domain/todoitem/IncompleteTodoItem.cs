@@ -11,8 +11,16 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
             Apply(new TodoItemCreated { Name = name, ListId = listId, Id = id });
         }
 
-        public void Complete() => _state = TodoItemStates.Completed;
+        public void Rename(string newName)
+        {
+            Name = newName;
+        }
 
-        public void Archive() => _state = TodoItemStates.Archived;
+        public void Relocate(int listId)
+        {
+            ListId = listId;
+        }
+
+        public void Complete() => _state = TodoItemStates.Completed;
     }
 }
