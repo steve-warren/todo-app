@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediatR;
 using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
-using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using WarrenSoftware.TodoApp.Modules.Users.Domain;
 
 namespace WarrenSoftware.TodoApp.Modules.Users
@@ -16,7 +15,6 @@ namespace WarrenSoftware.TodoApp.Modules.Users
 
     public class AuthenticateHandler : IRequestHandler<AuthenticateCommand, bool>
     {
-        
         private readonly IUnauthenticatedUserRepository _users;
         private readonly IUnitOfWork _uow;
         private readonly IAuthenticator _authenticator;

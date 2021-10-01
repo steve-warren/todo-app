@@ -44,5 +44,18 @@ namespace todo_app_test
                 .Should()
                 .Be(_clock.Time, because: "the user successfully logged in and the timestamp should be updated.");
         }
+
+        [Fact]
+        public void Successful_Authentication_Should_Raise_Event()
+        {
+            var user = new UnauthenticatedUser(email: "email", hashedPassword: "hash");
+            var authenticator = new MockAuthenticator { AuthenticationResultShouldBe = true };
+
+            user.Authenticate(_clock, authenticator, plaintextPassword: "foo");
+
+            user.DomainEvents
+                .Should()
+                .ContainItemsAssignableTo<UserLoggedIn>(because: "the user successfully logged in.");
+        }
     }
 }

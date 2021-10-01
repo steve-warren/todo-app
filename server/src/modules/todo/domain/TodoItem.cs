@@ -5,10 +5,11 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
 {
     public class TodoItem : AggregateRoot
     {
-        public TodoItem(string name, int listId, int id = default)
+        public TodoItem(string name, int listId, int id)
         {
             Name = name;
             ListId = listId;
+            Id = id;
         }
 
         private TodoItem() { }
@@ -25,5 +26,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         {
             ListId = listId;
         }
+    }
+
+    public class TodoItemCreated : IDomainEvent
+    {
+        public int ListId { get; init; }
     }
 }

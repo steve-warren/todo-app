@@ -16,12 +16,14 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     {
         private readonly IActiveTodoListRepository _lists;
         private readonly ITodoItemRepository _items;
+        private readonly ITodoItemIdentityService _identityService;
         private readonly IUnitOfWork _uow;
 
-        public AddItemHandler(IActiveTodoListRepository lists, ITodoItemRepository items, IUnitOfWork uow)
+        public AddItemHandler(IActiveTodoListRepository lists, ITodoItemRepository items, ITodoItemIdentityService identityService, IUnitOfWork uow)
         {
             _lists = lists;
-            _items = items; 
+            _items = items;
+            _identityService = identityService;
             _uow = uow;
         }
 
@@ -31,7 +33,8 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
 
             if (list is null) return -1;
 
-            var item = list.NewItem(request.ItemName);
+            var id = await _identityService.NextIdAsync(cancellationToken);
+            var item = new TodoItem(name: request.ItemName, listId: request.ListId, id: id);
 
             await _items.AddAsync(item);
 

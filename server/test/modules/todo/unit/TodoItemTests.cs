@@ -10,7 +10,7 @@ namespace todo_app_test
         [Fact]
         public void New_Item_Should_Accept_Valid_Name()
         {
-            var list = new TodoItem("a", listId: 1);
+            var list = new TodoItem("a", listId: 1, id: 2);
 
             list.Name.Should().Be("a", because: "the new item should use the name provided.");
         }
@@ -18,7 +18,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Accept_New_Name_When_Renamed()
         {
-            var list = new TodoItem("a", listId: 1);
+            var list = new TodoItem("a", listId: 1, id: 2);
 
             list.Rename("b");
 
@@ -28,7 +28,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Relocate_To_Another_List()
         {
-            var item = new TodoItem("item", listId: 1 );
+            var item = new TodoItem("item", listId: 1, id: 2);
             item.Relocate(listId: 2);
 
             item.ListId.Should().Be(2, because: "the item should have a different list id once relocated.");
