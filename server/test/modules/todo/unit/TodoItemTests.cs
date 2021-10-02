@@ -39,6 +39,24 @@ namespace todo_app_test
         }
 
         [Fact]
+        public void Item_Should_Change_Priority()
+        {
+            var item = new TodoItem("item", listId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
+            item.ChangePriority(TodoItemPriority.High);
+
+            item.Priority.Should().Be(TodoItemPriority.High, because: "the item's priority should be changed.");
+        }
+
+        [Fact]
+        public void Item_Should_Change_Reminder()
+        {
+            var item = new TodoItem("item", listId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: default);
+            item.SetReminder(TimeConstants.DateAndTime);
+
+            item.Reminder.Should().Be(TimeConstants.DateAndTime, because: "the item's reminder should be set.");
+        }
+
+        [Fact]
         public async Task AddItem()
         {
             var command = new AddItemCommand
@@ -78,14 +96,14 @@ namespace todo_app_test
             {
                 ItemId = 1,
                 Name = "foo",
-                ListId = 1,
+                ListId = 2,
                 Notes = "notes",
                 Priority = "High",
                 Reminder = TimeConstants.DateAndTime
             };
 
             var todoItem = new TodoItem(name: "", listId: 1, priority: TodoItemPriority.None, id: 1, notes: "", reminder: default);
-            var todoList = new TodoList(name: "", id: 1 );
+            var todoList = new TodoList(name: "", id: 2 );
 
 
             var lists = new MockTodoListRepository(new[] { todoList });
