@@ -14,6 +14,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using WarrenSoftware.TodoApp.Core.Domain;
+using WarrenSoftware.TodoApp.Core.Infrastructure;
+using WarrenSoftware.TodoApp.Modules.Todo.Domain;
+using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
+using WarrenSoftware.TodoApp.Modules.Users.Domain;
+using WarrenSoftware.TodoApp.Modules.Users.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Web
 {
@@ -35,7 +41,19 @@ namespace WarrenSoftware.TodoApp.Web
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "todo_app_web", Version = "v1" });
             });
 
+            services.AddScoped<ITodoListIdentityService, InMemoryTodoListIdentityService>();
+            services.AddScoped<ITodoItemIdentityService, InMemoryTodoItemIdentityService>();
+            services.AddScoped<ITodoListRepository, InMemoryTodoListRepository>();
+            services.AddScoped<ITodoItemRepository, InMemoryTodoItemRepository>();
+            
+            services.AddScoped<IAuthenticator, BCryptAuthenticator>();
+            services.AddScoped<IUserRepository, InMemoryUserRepository>();
+            
+            services.AddScoped<IUnitOfWork, InMemoryUnitOfWork>();
+            services.AddSingleton<ISystemClock, DefaultSystemClock>();
+
             services.AddScoped(_ => new SqlConnection(Configuration.GetConnectionString("TodoApp")));
+
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
         }
 
@@ -47,8 +65,6 @@ namespace WarrenSoftware.TodoApp.Web
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "todo_app_web v1"));
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

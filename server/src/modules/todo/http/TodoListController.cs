@@ -7,7 +7,7 @@ using WarrenSoftware.TodoApp.Core.Infrastructure;
 namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 {
     [ApiController]
-    [Authorize]
+
     public class TodoListController : ControllerBase
     {
         private readonly IMediator _mediator;
