@@ -8,7 +8,7 @@ namespace todo_app_test
 {
     public class UserTests
     {
-        private readonly MockSystemClock _clock = new() { Time = new DateTimeOffset(2021, 09, 30, 23, 06, 0, TimeSpan.FromHours(-5)) };
+        private readonly MockSystemClock _clock = new() { Time = TimeConstants.DateAndTime };
 
         [Fact]
         public void Valid_Password_Should_Authenticate()

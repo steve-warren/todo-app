@@ -8,12 +8,14 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         #pragma warning disable IDE0052 // mapped to ef core shadow property
         protected string _state = "";
 
-        public TodoItem(string name, int listId, TodoItemPriority priority, int id)
+        public TodoItem(string name, int listId, TodoItemPriority priority, int id, string notes, DateTimeOffset? reminder)
         {
             Name = name;
             ListId = listId;
             Priority = priority;
             Id = id;
+            Notes = notes;
+            Reminder = reminder;
 
             Apply(new TodoItemCreated { Name = name, ListId = listId, Id = id, Priority = priority, Reminder = Reminder });
         }

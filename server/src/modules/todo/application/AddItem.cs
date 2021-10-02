@@ -38,7 +38,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             if (list is null) return -1;
 
             var id = await _identityService.NextIdAsync(cancellationToken);
-            var item = new TodoItem(name: request.Name, listId: request.ListId, priority: TodoItemPriority.Parse(request.Priority), id: id);
+            var item = new TodoItem(name: request.Name, listId: request.ListId, priority: TodoItemPriority.Parse(request.Priority), id: id, notes: request.Notes, reminder: request.Reminder);
 
             _items.Add(item);
 
