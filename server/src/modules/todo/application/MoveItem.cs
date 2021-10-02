@@ -15,10 +15,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
 
     public class MoveItemHandler : AsyncRequestHandler<MoveItemCommand>
     {
-        private readonly IActiveTodoListRepository _lists;
+        private readonly ITodoListRepository _lists;
         private readonly IUnitOfWork _uow;
 
-        public MoveItemHandler(IActiveTodoListRepository lists, IUnitOfWork uow)
+        public MoveItemHandler(ITodoListRepository lists, IUnitOfWork uow)
         {
             _lists = lists;
             _uow = uow;

@@ -15,11 +15,11 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
 
     public class RelocateItemHandler : AsyncRequestHandler<RelocateItemCommand>
     {
-        private readonly IIncompleteTodoItemRepository _items;
-        private readonly IActiveTodoListRepository _lists;
+        private readonly ITodoItemRepository _items;
+        private readonly ITodoListRepository _lists;
         private readonly IUnitOfWork _uow;
 
-        public RelocateItemHandler(IIncompleteTodoItemRepository items, IActiveTodoListRepository lists, IUnitOfWork uow)
+        public RelocateItemHandler(ITodoItemRepository items, ITodoListRepository lists, IUnitOfWork uow)
         {
             _items = items;
             _lists = lists;
