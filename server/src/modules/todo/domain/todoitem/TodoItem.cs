@@ -37,5 +37,20 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         {
             ListId = listId;
         }
+
+        public void SetReminder(DateTimeOffset? when)
+        {
+            Reminder = when;
+        }
+
+        public void ChangePriority(TodoItemPriority priority)
+        {
+            Priority = priority;
+        }
+
+        public void WriteNotes(string text)
+        {
+            Notes = text;
+        }
     }
 }

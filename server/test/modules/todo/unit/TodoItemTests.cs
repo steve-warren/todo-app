@@ -72,28 +72,38 @@ namespace todo_app_test
         }
 
         [Fact]
-        public async Task RenameItem()
+        public async Task EditItem()
         {
-            var command = new RenameItemCommand
+            var command = new EditItemCommand
             {
                 ItemId = 1,
-                Name = "foo"
+                Name = "foo",
+                ListId = 1,
+                Notes = "notes",
+                Priority = "High",
+                Reminder = TimeConstants.DateAndTime
             };
 
-            var todoItem = new TodoItem(name: "", listId: 0, priority: TodoItemPriority.None, id: 1, notes: "", reminder: default);
+            var todoItem = new TodoItem(name: "", listId: 1, priority: TodoItemPriority.None, id: 1, notes: "", reminder: default);
+            var todoList = new TodoList(name: "", id: 1 );
+
+
+            var lists = new MockTodoListRepository(new[] { todoList });
             var items = new MockTodoItemRepository(new[] { todoItem });
             var uow = new UnitOfWorkSpy();
 
-            var handler = new RenameItemHandler(items, uow);
+            var handler = new EditItemHandler(items, lists, uow);
 
             await handler.Handle(command, CancellationToken.None);
 
             uow.WasCalled.Should().BeTrue(because: "unit of work should be called.");
 
-            var item = items.First();
-
-            item.Id.Should().Be(command.ItemId, because: "it should match value from command.");
-            item.Name.Should().Be(command.Name, because: "it should match value from command.");
+            todoItem.Id.Should().Be(command.ItemId, because: "it should match value from command.");
+            todoItem.Name.Should().Be(command.Name, because: "it should match value from command.");
+            todoItem.ListId.Should().Be(command.ListId, because: "it should match value from command.");
+            todoItem.Notes.Should().Be(command.Notes, because: "it should match value from command.");
+            todoItem.Priority.Should().Be(TodoItemPriority.High, because: "it should match value from command.");
+            todoItem.Reminder.Should().Be(command.Reminder, because: "it should match value from command.");
         }
     }
 }
