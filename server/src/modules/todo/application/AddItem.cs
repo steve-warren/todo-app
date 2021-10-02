@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -9,7 +10,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     public class AddItemCommand : IRequest<int>
     {
         public int ListId { get; init; }
-        public string ItemName { get; init; } = "";
+        public string Name { get; init; } = "";
+        public string Priority { get; init; } = "";
+        public DateTimeOffset? Reminder { get; init; }
+        public string Notes { get; init; } = "";
     }
 
     public class AddItemHandler : IRequestHandler<AddItemCommand, int>
@@ -34,7 +38,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             if (list is null) return -1;
 
             var id = await _identityService.NextIdAsync(cancellationToken);
-            var item = new TodoItem(name: request.ItemName, listId: request.ListId, id: id);
+            var item = new TodoItem(name: request.Name, listId: request.ListId, priority: TodoItemPriority.Parse(request.Priority), id: id);
 
             _items.Add(item);
 
