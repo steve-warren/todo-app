@@ -105,7 +105,6 @@ namespace todo_app_test
             var todoItem = new TodoItem(name: "", listId: 1, priority: TodoItemPriority.None, id: 1, notes: "", reminder: default);
             var todoList = new TodoList(name: "", id: 2 );
 
-
             var lists = new MockTodoListRepository(new[] { todoList });
             var items = new MockTodoItemRepository(new[] { todoItem });
             var uow = new UnitOfWorkSpy();

@@ -1,0 +1,11 @@
+CREATE TABLE TodoItems
+(
+    Id INT PRIMARY KEY NOT NULL,
+    OwnerId INT NOT NULL,
+    ListId INT NOT NULL,
+    Name VARCHAR(64) NOT NULL,
+    Notes VARCHAR(2048) NOT NULL,
+    Reminder DATETIMEOFFSET NULL,
+    Priority VARCHAR(8) NOT NULL,
+    Version ROWVERSION NOT NULL
+)
