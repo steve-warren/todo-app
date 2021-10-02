@@ -7,5 +7,6 @@ CREATE TABLE TodoItems
     Notes VARCHAR(2048) NOT NULL,
     Reminder DATETIMEOFFSET NULL,
     Priority VARCHAR(8) NOT NULL,
+    State VARCHAR(16) NOT NULL,
     Version ROWVERSION NOT NULL
 )
