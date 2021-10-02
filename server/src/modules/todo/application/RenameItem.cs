@@ -6,13 +6,13 @@ using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo
 {
-    public class RenameItemCommand : IRequest
+    public class RenameItemCommand : IRequest<Unit>
     {
-        public int Id { get; init; }
+        public int ItemId { get; init; }
         public string Name { get; init; } = "";
     }
 
-    public class RenameItemHandler : AsyncRequestHandler<RenameItemCommand>
+    public class RenameItemHandler : IRequestHandler<RenameItemCommand, Unit>
     {
         private readonly ITodoItemRepository _items;
         private readonly IUnitOfWork _uow;
@@ -23,15 +23,17 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             _uow = uow;
         }
 
-        protected override async Task Handle(RenameItemCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RenameItemCommand request, CancellationToken cancellationToken)
         {
-            var item = await _items.FindByIdAsync(request.Id);
+            var item = await _items.FindByIdAsync(request.ItemId);
 
-            if (item is null) return;
+            if (item is null) return Unit.Value;
 
             item.Rename(request.Name);
 
             await _uow.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

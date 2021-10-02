@@ -59,7 +59,7 @@ namespace todo_app_test
             var itemIdentity = await handler.Handle(command, CancellationToken.None);
 
             itemIdentity.Should().Be(expected: 1, because: "the id should be retrieved from the identity service.");
-            uow.WasCalled.Should().BeTrue(because: "unit of work should complete.");
+            uow.WasCalled.Should().BeTrue(because: "unit of work should be called.");
 
             var item = items.First();
 
@@ -69,6 +69,31 @@ namespace todo_app_test
             item.Notes.Should().Be(command.Notes, because: "should match value from command.");
             item.Priority.Should().Be(TodoItemPriority.Medium, because: "should match value from command.");
             item.Reminder.Should().Be(command.Reminder, because: "should match value from command.");
+        }
+
+        [Fact]
+        public async Task RenameItem()
+        {
+            var command = new RenameItemCommand
+            {
+                ItemId = 1,
+                Name = "foo"
+            };
+
+            var todoItem = new TodoItem(name: "", listId: 0, priority: TodoItemPriority.None, id: 1, notes: "", reminder: default);
+            var items = new MockTodoItemRepository(new[] { todoItem });
+            var uow = new UnitOfWorkSpy();
+
+            var handler = new RenameItemHandler(items, uow);
+
+            await handler.Handle(command, CancellationToken.None);
+
+            uow.WasCalled.Should().BeTrue(because: "unit of work should be called.");
+
+            var item = items.First();
+
+            item.Id.Should().Be(command.ItemId, because: "it should match value from command.");
+            item.Name.Should().Be(command.Name, because: "it should match value from command.");
         }
     }
 }

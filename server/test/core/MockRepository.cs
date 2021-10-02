@@ -6,7 +6,7 @@ namespace todo_app_test
 {
     public abstract class MockRepository<TEntity> : IEnumerable<TEntity> where TEntity : class
     {
-        public MockRepository() { }
+        protected MockRepository() { }
         public MockRepository(IEnumerable<TEntity> items)
         {
             Items = new List<TEntity>(items);   
