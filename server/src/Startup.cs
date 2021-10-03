@@ -48,7 +48,6 @@ namespace WarrenSoftware.TodoApp.Web
             services.AddScoped<IAuthenticator, BCryptAuthenticator>();
             services.AddScoped<IUserRepository, InMemoryUserRepository>();
             
-            services.AddScoped<IUnitOfWork, InMemoryUnitOfWork>();
             services.AddSingleton<ISystemClock, DefaultSystemClock>();
 
             services.AddScoped(_ => new SqlConnection(Configuration.GetConnectionString("TodoApp")));
@@ -60,6 +59,8 @@ namespace WarrenSoftware.TodoApp.Web
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
             services.AddDbContext<TodoDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());
+
+            services.AddScoped<IUnitOfWork>(_ => _.GetRequiredService<TodoDbContext>());
 
             services.AddSingleton<IEventBus,InMemoryEventBus>();
         }

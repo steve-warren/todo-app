@@ -8,6 +8,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
 {
     public class CreateListCommand : IRequest<int>
     {
+        public int OwnerId { get; init; }
         public string Name { get; init; } = "";
     }
 
@@ -27,7 +28,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
         public async Task<int> Handle(CreateListCommand request, CancellationToken cancellationToken)
         {
             var id = await _identityService.NextIdAsync(cancellationToken);
-            var list = new TodoList(request.Name, id);
+            var list = new TodoList(request.Name, id, request.OwnerId);
             _repository.Add(list);
 
             await _uow.SaveChangesAsync(cancellationToken);

@@ -8,13 +8,15 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
     {
         private readonly List<int> _items;
 
-        public TodoList(string name, int id)
+        public TodoList(string name, int id, int ownerId)
         {
             Name = name;
             Id = id;
+            OwnerId = ownerId;
             _items = new();
         }
 
+        public int OwnerId { get; private set; }
         public string Name { get; private set; } = "";
         public IReadOnlyCollection<int> Items => _items;
 

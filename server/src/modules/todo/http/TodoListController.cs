@@ -30,5 +30,19 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 
             await _mediator.Send(query);
         }
+
+        [HttpPost("api/todo/lists")]
+        public async Task<IActionResult> CreateListAsync()
+        {
+            var command = new CreateListCommand
+            {
+                Name = "foo",
+                OwnerId = 1
+            };
+
+            var id = await _mediator.Send(command);
+
+            return Ok(id);
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
     {
         private readonly SemaphoreSlim _semaphore = new(initialCount: 1);
         private readonly  int _blockSize;
-        private HiLoValue _currentValue = new(Low: -1, High: 0);
+        private HiLoValue _currentValue = new(Low: 0, High: 1);
 
         public HiLoState(int blockSize)
         {
