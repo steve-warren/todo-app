@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
+namespace WarrenSoftware.TodoApp.Core.Domain
 {
-    public interface ITodoItemIdentityService
+    public interface IIdentityService
     {
         Task<int> NextIdAsync(CancellationToken cancellationToken);
     }

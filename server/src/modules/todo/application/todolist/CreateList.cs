@@ -14,10 +14,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     public class CreateListHandler : IRequestHandler<CreateListCommand, int>
     {
         private readonly ITodoListRepository _repository;
-        private readonly ITodoListIdentityService _identityService;
+        private readonly IIdentityService _identityService;
         private readonly IUnitOfWork _uow;
 
-        public CreateListHandler(ITodoListRepository repository, ITodoListIdentityService identityService,  IUnitOfWork uow)
+        public CreateListHandler(ITodoListRepository repository, IIdentityService identityService,  IUnitOfWork uow)
         {
             _repository = repository;
             _identityService = identityService;

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,18 +9,10 @@ namespace WarrenSoftware.TodoApp.Modules.Health.Http
     [ApiController]
     public class HealthController : ControllerBase
     {
-        private readonly HiLoGenerator _hilo;
-
-        public HealthController(HiLoGenerator hilo)
-        {
-            _hilo = hilo;
-        }
-
         [HttpGet("api/health")]
         public async Task<IActionResult> Get()
         {
-            var low = await _hilo.NextAsync(CancellationToken.None);
-            return Ok(low);
+            return Ok($"{DateTimeOffset.Now} - 😎");
         }
     }
 }

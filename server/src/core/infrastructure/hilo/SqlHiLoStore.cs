@@ -4,12 +4,12 @@ using Microsoft.Data.SqlClient;
 
 namespace WarrenSoftware.TodoApp.Core.Infrastructure
 {
-    public class SqlHiLoRepository : IHiLoRepository
+    public class SqlHiLoStore : IHiLoStore
     {
         private readonly SqlConnection _connection;
         private readonly string _sequenceName;
 
-        public SqlHiLoRepository(SqlConnection connection, string sequenceName)
+        public SqlHiLoStore(SqlConnection connection, string sequenceName)
         {
             _connection = connection;
             _sequenceName = sequenceName;

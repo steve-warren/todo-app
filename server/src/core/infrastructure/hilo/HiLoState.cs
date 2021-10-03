@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 
 namespace WarrenSoftware.TodoApp.Core.Infrastructure
 {
-
-    public sealed class HiLoGeneratorState : IDisposable
+    public sealed class HiLoState : IDisposable
     {
         private readonly SemaphoreSlim _semaphore = new(initialCount: 1);
         private readonly  int _blockSize;
         private HiLoValue _currentValue = new(Low: -1, High: 0);
 
-        public HiLoGeneratorState(int blockSize)
+        public HiLoState(int blockSize)
         {
             if (blockSize <= 0) throw new ArgumentOutOfRangeException(nameof(blockSize));
 
@@ -24,7 +23,7 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
             GC.SuppressFinalize(this);
         }
 
-        public async Task<int> NextIdAsync(IHiLoRepository repository, CancellationToken cancellationToken)
+        public async Task<int> NextIdAsync(IHiLoStore store, CancellationToken cancellationToken)
         {
             var nextValue = NextValue();
 
@@ -36,7 +35,7 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
                 {
                     if (nextValue.High == _currentValue.High)
                     {
-                        var nextLow = await repository.NextLowAsync(cancellationToken).ConfigureAwait(false);
+                        var nextLow = await store.NextLowAsync(cancellationToken).ConfigureAwait(false);
                         _currentValue = new HiLoValue(nextLow, nextLow + _blockSize);
                     }
 

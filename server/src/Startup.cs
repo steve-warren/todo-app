@@ -54,9 +54,9 @@ namespace WarrenSoftware.TodoApp.Web
 
             services.AddScoped(_ => new SqlConnection(Configuration.GetConnectionString("TodoApp")));
 
-            services.AddSingleton(_ => new HiLoGeneratorState(10));
-            services.AddScoped<HiLoGenerator>();
-            services.AddScoped<IHiLoRepository, SqlHiLoRepository>(_ => new SqlHiLoRepository(_.GetRequiredService<SqlConnection>(), "HiLoSequence"));
+            services.AddSingleton(_ => new HiLoState(10));
+            services.AddScoped<IIdentityService, HiLoIdentityService>();
+            services.AddScoped<IHiLoStore, SqlHiLoStore>(_ => new SqlHiLoStore(_.GetRequiredService<SqlConnection>(), "HiLoSequence"));
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
         }

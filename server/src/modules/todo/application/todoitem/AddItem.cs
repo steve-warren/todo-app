@@ -20,10 +20,10 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     {
         private readonly ITodoListRepository _lists;
         private readonly ITodoItemRepository _items;
-        private readonly ITodoItemIdentityService _identityService;
+        private readonly IIdentityService _identityService;
         private readonly IUnitOfWork _uow;
 
-        public AddItemHandler(ITodoListRepository lists, ITodoItemRepository items, ITodoItemIdentityService identityService, IUnitOfWork uow)
+        public AddItemHandler(ITodoListRepository lists, ITodoItemRepository items, IIdentityService identityService, IUnitOfWork uow)
         {
             _lists = lists;
             _items = items;
