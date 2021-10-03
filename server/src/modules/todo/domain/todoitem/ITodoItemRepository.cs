@@ -8,6 +8,6 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         Task<IncompleteTodoItem> FindIncompleteByIdAsync(int id);
         Task<CompletedTodoItem> FindCompletedByIdAsync(int id);
         void Add(TodoItem item);
-        void Delete(TodoItem item);
+        void Remove(TodoItem item);
     }
 }

@@ -15,7 +15,7 @@ namespace todo_app_test
             
         public void Add(TodoItem item) => Items.Add(item);
 
-        public void Delete(TodoItem item) => Items.Remove(item);
+        public void Remove(TodoItem item) => Items.Remove(item);
 
         public Task<TodoItem> FindByIdAsync(int id) => Task.FromResult(Items.FirstOrDefault(l => l.Id == id));
 

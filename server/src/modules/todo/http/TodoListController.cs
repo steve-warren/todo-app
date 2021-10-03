@@ -24,7 +24,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 
             var query = new GetAllListsQuery
             {
-                OwnerId = User.GetUserId(),
+                OwnerId = 1,//User.GetUserId(),
                 OutputStream = Response.Body
             };
 

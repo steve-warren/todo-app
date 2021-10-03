@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,8 +42,8 @@ namespace WarrenSoftware.TodoApp.Web
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "todo_app_web", Version = "v1" });
             });
 
-            services.AddScoped<ITodoListRepository, InMemoryTodoListRepository>();
-            services.AddScoped<ITodoItemRepository, InMemoryTodoItemRepository>();
+            services.AddScoped<ITodoListRepository, TodoListRepository>();
+            services.AddScoped<ITodoItemRepository, TodoItemRepository>();
             
             services.AddScoped<IAuthenticator, BCryptAuthenticator>();
             services.AddScoped<IUserRepository, InMemoryUserRepository>();
@@ -57,6 +58,10 @@ namespace WarrenSoftware.TodoApp.Web
             services.AddScoped<IHiLoStore, SqlHiLoStore>(_ => new SqlHiLoStore(_.GetRequiredService<SqlConnection>(), "HiLoSequence"));
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+
+            services.AddDbContext<TodoDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());
+
+            services.AddSingleton<IEventBus,InMemoryEventBus>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

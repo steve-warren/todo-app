@@ -16,7 +16,7 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
 
         public static async Task StreamUtf8TextAsync(this SqlCommand command, Stream stream, CancellationToken cancellationToken = default)
         {
-            using var reader = command.ExecuteReader(CommandBehavior.SequentialAccess);
+            using var reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess, cancellationToken).ConfigureAwait(false);
 
             await using var writer = new StreamWriter(stream: stream, encoding: Encoding.UTF8, bufferSize: BUFFER_SIZE, leaveOpen: true);
 
@@ -24,18 +24,18 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
 
             try
             {
-                while (await reader.ReadAsync(cancellationToken))
+                while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false))
                 {
                     using var textReader = reader.GetTextReader(0);
                     var charsRead = 0;
 
                     while(true)
                     {
-                        charsRead = await textReader.ReadAsync(buffer, 0, BUFFER_SIZE);
+                        charsRead = await textReader.ReadAsync(buffer, 0, BUFFER_SIZE).ConfigureAwait(false);
 
                         if (charsRead == 0) break;
 
-                        await writer.WriteAsync(buffer, 0, charsRead);
+                        await writer.WriteAsync(buffer, 0, charsRead).ConfigureAwait(false);
                     }
                 }
             }
