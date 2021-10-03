@@ -33,6 +33,8 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
                     TodoLists
                 WHERE
                     OwnerId = @OwnerId
+                        AND
+                    ArchiveState = 'NotArchived'
                 ORDER BY
                     Name ASC
                 FOR JSON PATH

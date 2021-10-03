@@ -14,7 +14,7 @@ namespace todo_app_test
         [Fact]
         public void New_Item_Should_Accept_Valid_Name()
         {
-            var list = new TodoItem("a", listId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
+            var list = new TodoItem("a", listId: 1, ownerId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
 
             list.Name.Should().Be("a", because: "the new item should use the name provided.");
         }
@@ -22,7 +22,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Accept_New_Name_When_Renamed()
         {
-            var list = new TodoItem("a", listId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
+            var list = new TodoItem("a", listId: 1, ownerId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
 
             list.Rename("b");
 
@@ -32,7 +32,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Relocate_To_Another_List()
         {
-            var item = new TodoItem("item", listId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
+            var item = new TodoItem("item", listId: 1, ownerId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
             item.Relocate(listId: 2);
 
             item.ListId.Should().Be(2, because: "the item should have a different list id once relocated.");
@@ -41,7 +41,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Change_Priority()
         {
-            var item = new TodoItem("item", listId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
+            var item = new TodoItem("item", listId: 1, ownerId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: TimeConstants.DateAndTime);
             item.ChangePriority(TodoItemPriority.High);
 
             item.Priority.Should().Be(TodoItemPriority.High, because: "the item's priority should be changed.");
@@ -50,7 +50,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Change_Reminder()
         {
-            var item = new TodoItem("item", listId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: default);
+            var item = new TodoItem("item", listId: 1, ownerId: 1, priority: TodoItemPriority.None, id: 2, notes: "", reminder: default);
             item.SetReminder(TimeConstants.DateAndTime);
 
             item.Reminder.Should().Be(TimeConstants.DateAndTime, because: "the item's reminder should be set.");
@@ -68,7 +68,7 @@ namespace todo_app_test
                 Reminder = TimeConstants.DateAndTime
             };
 
-            var lists = new MockTodoListRepository(new[] { new TodoList("list", 1 )});
+            var lists = new MockTodoListRepository(new[] { new TodoList("list", 1, 1)});
             var items = new MockTodoItemRepository();
             var ids = new MockTodoItemIdentityService(id: 1);
             var uow = new UnitOfWorkSpy();
@@ -102,8 +102,8 @@ namespace todo_app_test
                 Reminder = TimeConstants.DateAndTime
             };
 
-            var todoItem = new TodoItem(name: "", listId: 1, priority: TodoItemPriority.None, id: 1, notes: "", reminder: default);
-            var todoList = new TodoList(name: "", id: 2 );
+            var todoItem = new TodoItem(name: "", listId: 1, ownerId: 1, priority: TodoItemPriority.None, id: 1, notes: "", reminder: default);
+            var todoList = new TodoList(name: "", id: 2 , ownerId: 1 );
 
             var lists = new MockTodoListRepository(new[] { todoList });
             var items = new MockTodoItemRepository(new[] { todoItem });

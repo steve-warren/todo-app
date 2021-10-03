@@ -6,6 +6,8 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
 {
     public class TodoList : AggregateRoot
     {
+        #pragma warning disable IDE0052 // mapped to ef core shadow property
+        private string _archiveState;
         private readonly List<int> _items;
 
         public TodoList(string name, int id, int ownerId)
@@ -14,6 +16,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
             Id = id;
             OwnerId = ownerId;
             _items = new();
+            _archiveState = "NotArchived";
         }
 
         public int OwnerId { get; private set; }
@@ -41,6 +44,13 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
 
             _items.RemoveAt(currentIndex);
             _items.Insert(index: position, itemId);
+        }
+
+        public void Archive()
+        {
+            _archiveState = "Archived";
+
+            Apply(new TodoListArchived { Name = this.Name, Id = this.Id });
         }
     }
 }

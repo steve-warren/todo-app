@@ -10,7 +10,7 @@ namespace todo_app_test
         [Fact]
         public void New_List_Should_Accept_Valid_Name()
         {
-            var list = new TodoList(name: "a", id: 1);
+            var list = new TodoList(name: "a", id: 1, ownerId: 1);
 
             list.Name.Should().Be("a", because: "the new list should use the name provided.");
         }
@@ -18,7 +18,7 @@ namespace todo_app_test
         [Fact]
         public void List_Should_Accept_New_Name_When_Renamed()
         {
-            var list = new TodoList(name: "a", id: 1);
+            var list = new TodoList(name: "a", id: 1, ownerId: 1);
 
             list.Rename("b");
 
@@ -28,7 +28,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Be_Added_To_Top_Of_List()
         {
-            var list = new TodoList(name: "a", id: 1);
+            var list = new TodoList(name: "a", id: 1, ownerId: 1);
 
             list.AddItem(itemId: 1111);
             list.AddItem(itemId: 2222);
@@ -42,7 +42,7 @@ namespace todo_app_test
         [Fact]
         public void Item_Should_Be_Moved_To_Specified_Position()
         {
-            var list = new TodoList(name: "a", id: 1);
+            var list = new TodoList(name: "a", id: 1, ownerId: 1);
 
             list.AddItem(itemId: 1111);
             list.AddItem(itemId: 2222);
