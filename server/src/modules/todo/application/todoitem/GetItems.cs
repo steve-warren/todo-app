@@ -39,6 +39,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
                     OwnerId = @OwnerId
                     AND
                     ListId = @ListId
+                FOR JSON AUTO
             ", _connection);
 
             command.Parameters.AddWithValue("@OwnerId", request.OwnerId);

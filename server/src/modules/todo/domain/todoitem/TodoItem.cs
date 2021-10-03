@@ -8,14 +8,16 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         #pragma warning disable IDE0052 // mapped to ef core shadow property
         protected string _state = "";
 
-        public TodoItem(string name, int listId, TodoItemPriority priority, int id, string notes, DateTimeOffset? reminder)
+        public TodoItem(string name, int listId, int ownerId, TodoItemPriority priority, int id, string notes, DateTimeOffset? reminder)
         {
             Name = name;
             ListId = listId;
+            OwnerId = ownerId;
             Priority = priority;
             Id = id;
             Notes = notes;
             Reminder = reminder;
+            _state = TodoItemStates.Incomplete;
 
             Apply(new TodoItemCreated { Name = name, ListId = listId, Id = id, Priority = priority, Reminder = Reminder });
         }
@@ -23,6 +25,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         protected TodoItem() { }
 
         public int ListId { get; private set; }
+        public int OwnerId { get; private set; }
         public string Name { get; private set; } = "";
         public string Notes { get; private set; } = "";
         public DateTimeOffset? Reminder { get; private set; }

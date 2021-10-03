@@ -7,7 +7,6 @@ using WarrenSoftware.TodoApp.Core.Infrastructure;
 namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 {
     [ApiController]
-    [Authorize]
     public class TodoItemController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -24,12 +23,30 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 
             var query = new GetItemsQuery
             {
-                OwnerId = User.GetUserId(),
+                OwnerId = 1,//User.GetUserId(),
                 ListId = listId,
                 OutputStream = Response.Body
             };
 
             await _mediator.Send(query);
+        }
+
+        [HttpPost("api/todo/items")]
+        public async Task<IActionResult> AddTodoItemAsync([FromBody] AddTodoItemViewModel model)
+        {
+            var command = new AddItemCommand
+            {
+                ListId = model.ListId,
+                Name = model.Name,
+                Notes = model.Notes,
+                Priority = model.Priority,
+                Reminder = model.Reminder,
+                OwnerId = 1
+            };
+
+            var id = await _mediator.Send(command);
+
+            return Ok(id);
         }
     }
 }

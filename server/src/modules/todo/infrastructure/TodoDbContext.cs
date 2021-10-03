@@ -45,6 +45,9 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
                          v => v.Name,
                          v => TodoItemPriority.Parse(v)
                      );
+            
+            todoItems.Property<string>("_state")
+                     .HasColumnName("State");
 
             todoItems.ToTable("TodoItems");
         }

@@ -10,6 +10,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     public class AddItemCommand : IRequest<int>
     {
         public int ListId { get; init; }
+        public int OwnerId { get; init; }
         public string Name { get; init; } = "";
         public string Priority { get; init; } = "";
         public DateTimeOffset? Reminder { get; init; }
@@ -38,7 +39,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             if (list is null) return -1;
 
             var id = await _identityService.NextIdAsync(cancellationToken);
-            var item = new TodoItem(name: request.Name, listId: request.ListId, priority: TodoItemPriority.Parse(request.Priority), id: id, notes: request.Notes, reminder: request.Reminder);
+            var item = new TodoItem(name: request.Name, ownerId: list.OwnerId, listId: request.ListId, priority: TodoItemPriority.Parse(request.Priority), id: id, notes: request.Notes, reminder: request.Reminder);
 
             _items.Add(item);
 
