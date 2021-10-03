@@ -1,10 +1,10 @@
-using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using System.Threading.Tasks;
 using System.Threading;
+using WarrenSoftware.TodoApp.Core.Domain;
 
 namespace todo_app_test
 {
-    public class MockTodoItemIdentityService : MockWithReturnValue<int>, ITodoItemIdentityService
+    public class MockTodoItemIdentityService : MockWithReturnValue<int>, IIdentityService
     {
         public MockTodoItemIdentityService(int id) => ReturnValue = id;
 

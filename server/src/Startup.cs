@@ -41,8 +41,6 @@ namespace WarrenSoftware.TodoApp.Web
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "todo_app_web", Version = "v1" });
             });
 
-            services.AddScoped<ITodoListIdentityService, InMemoryTodoListIdentityService>();
-            services.AddScoped<ITodoItemIdentityService, InMemoryTodoItemIdentityService>();
             services.AddScoped<ITodoListRepository, InMemoryTodoListRepository>();
             services.AddScoped<ITodoItemRepository, InMemoryTodoItemRepository>();
             
