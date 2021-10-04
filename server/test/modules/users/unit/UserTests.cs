@@ -3,6 +3,7 @@ using Xunit;
 using FluentAssertions;
 using WarrenSoftware.TodoApp.Modules.Users.Domain;
 using WarrenSoftware.TodoApp.Tests.Core;
+using WarrenSoftware.TodoApp.Core.Domain;
 
 namespace todo_app_test
 {
@@ -13,32 +14,32 @@ namespace todo_app_test
         [Fact]
         public void Valid_Password_Should_Authenticate()
         {
-            var user = new UnauthenticatedUser(email: "email", hashedPassword: "hash");
+            var user = new User(id: 1, email: "", firstName: "", lastName: "");
             var authenticator = new MockAuthenticator { AuthenticationResultShouldBe = true };
 
-            user.Authenticate(_clock, authenticator, plaintextPassword: "foo")
+            user.Login(_clock, authenticator, plaintextPassword: "foo")
                 .Should()
-                .BeTrue(because: "the mock authenticator always returns true.");
+                .Be(AuthenticationResult.Success, because: "the mock authenticator always returns true.");
         }
 
         [Fact]
         public void Invalid_Password_Should_Not_Authenticate()
         {
-            var user = new UnauthenticatedUser(email: "email", hashedPassword: "hash");
+            var user = new User(id: 1, email: "", firstName: "", lastName: "");
             var authentiator = new MockAuthenticator { AuthenticationResultShouldBe = false };
 
-            user.Authenticate(_clock, authentiator, plaintextPassword: "foo")
+            user.Login(_clock, authentiator, plaintextPassword: "foo")
                 .Should()
-                .BeFalse(because: "the mock authenticator always returns false.");
+                .Be(AuthenticationResult.InvalidUserNameAndOrPassword, because: "the mock authenticator always returns false.");
         }
 
         [Fact]
         public void Successful_Authentication_Should_Update_Last_Login_Date()
         {
-            var user = new UnauthenticatedUser(email: "email", hashedPassword:"hash");
+            var user = new User(id: 1, email: "", firstName: "", lastName: "");
             var authenticator = new MockAuthenticator { AuthenticationResultShouldBe = true };
 
-            user.Authenticate(_clock, authenticator, plaintextPassword: "foo");
+            user.Login(_clock, authenticator, plaintextPassword: "foo");
 
             user.LastLoginDate
                 .Should()
@@ -48,10 +49,10 @@ namespace todo_app_test
         [Fact]
         public void Successful_Authentication_Should_Raise_Event()
         {
-            var user = new UnauthenticatedUser(email: "email", hashedPassword: "hash");
+            var user = new User(id: 1, email: "", firstName: "", lastName: "");
             var authenticator = new MockAuthenticator { AuthenticationResultShouldBe = true };
 
-            user.Authenticate(_clock, authenticator, plaintextPassword: "foo");
+            user.Login(_clock, authenticator, plaintextPassword: "foo");
 
             user.DomainEvents
                 .Should()

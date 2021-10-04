@@ -4,6 +4,6 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Domain
 {
     public interface IUserRepository
     {
-        Task<UnauthenticatedUser> FindUnauthenticatedUserByEmailAsync(string email);
+        Task<User> FindByEmailAsync(string email);
     }
 }

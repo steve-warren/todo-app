@@ -6,5 +6,10 @@ namespace todo_app_test
     {
         public bool AuthenticationResultShouldBe { get; init; }
         public bool Authenticate(string plaintextPassword, string hash) => AuthenticationResultShouldBe;
+
+        public string HashPassword(string plaintextPassword)
+        {
+            return "";    
+        }
     }
 }

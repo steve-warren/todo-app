@@ -49,7 +49,7 @@ namespace WarrenSoftware.TodoApp.Web
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();
             
             services.AddScoped<IAuthenticator, BCryptAuthenticator>();
-            services.AddScoped<IUserRepository, InMemoryUserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             
             services.AddSingleton<ISystemClock, DefaultSystemClock>();
 

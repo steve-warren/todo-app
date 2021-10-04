@@ -30,15 +30,13 @@ namespace WarrenSoftware.TodoApp.Modules.Users
 
         public async Task<bool> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
         {
-            var user = await _users.FindUnauthenticatedUserByEmailAsync(request.Email);
+            var user = await _users.FindByEmailAsync(request.Email);
 
-            if (user.Authenticate(_clock, _authenticator, request.PlaintextPassword))
-            {
-                await _uow.SaveChangesAsync(cancellationToken);
-                return true;
-            }
+            var authenticationResult = user.Login(_clock, _authenticator, request.PlaintextPassword);
 
-            return false;
+            await _uow.SaveChangesAsync(cancellationToken);
+
+            return authenticationResult == AuthenticationResult.Success;
         }
     }
 }
