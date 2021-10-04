@@ -17,5 +17,10 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure
         {
             return _users.FirstOrDefaultAsync(user => user.Email == email);
         }
+
+        public Task<User> FindByIdAsync(int id)
+        {
+            return _users.FirstOrDefaultAsync(user => user.Id == id);
+        }
     }
 }

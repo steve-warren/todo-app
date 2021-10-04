@@ -8,7 +8,7 @@ using WarrenSoftware.TodoApp.Core.Infrastructure;
 namespace WarrenSoftware.TodoApp.Modules.Users.Http
 {
     [ApiController]
-
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -18,9 +18,9 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
             _mediator = mediator;
         }
 
-
-        [HttpPut("api/user/auth")]
-        public async Task AuthenticateUser([FromBody] AuthenticateUserModel model)
+        [HttpPost("api/user/session")]
+        [AllowAnonymous]
+        public async Task AuthenticateUserAsync([FromBody] AuthenticateUserModel model)
         {
             var authenticateCommand = new AuthenticateCommand
             {
@@ -46,12 +46,24 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
                 Response.StatusCode = StatusCodes.Status401Unauthorized;
         }
 
+        [HttpDelete("api/user/session")]
+        [AllowAnonymous]
+        public Task SignOutUserAsync()
+        {
+            var command = new LogOutUserCommand
+            {
+                UserId = User.GetUserId()
+            };
+
+            return _mediator.Send(command);
+        }
+
         [HttpGet("api/user/profile")]
         public async Task GetUserProfileAsync()
         {
             var userProfileQuery = new GetUserProfileQuery
             {
-                UserId = 500,
+                UserId = User.GetUserId(),
                 OutputStream = Response.BodyWriter.AsStream()
             };
 
