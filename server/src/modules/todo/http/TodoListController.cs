@@ -32,11 +32,11 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
         }
 
         [HttpPost("api/todo/lists")]
-        public async Task<IActionResult> CreateListAsync()
+        public async Task<IActionResult> AddListAsync([FromBody] AddTodoListViewModel model)
         {
             var command = new CreateListCommand
             {
-                Name = "foo",
+                Name = model.Name,
                 OwnerId = 1
             };
 

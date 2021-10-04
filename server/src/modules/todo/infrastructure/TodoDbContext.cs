@@ -36,6 +36,9 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
                          v => JsonSerializer.Serialize(v, null),
                          v => JsonSerializer.Deserialize<List<int>>(v, null),
                          comparer);
+            
+            todoLists.Property<string>("_archiveState")
+                     .HasColumnName("ArchiveState");
 
             todoLists.ToTable("TodoLists");
             

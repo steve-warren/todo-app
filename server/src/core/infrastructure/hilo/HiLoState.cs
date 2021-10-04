@@ -8,7 +8,7 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
     {
         private readonly SemaphoreSlim _semaphore = new(initialCount: 1);
         private readonly  int _blockSize;
-        private HiLoValue _currentValue = new(Low: 0, High: 1);
+        private HiLoValue _currentValue = new(Low: -1, High: 0);
 
         public HiLoState(int blockSize)
         {
@@ -36,7 +36,8 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
                     if (nextValue.High == _currentValue.High)
                     {
                         var nextLow = await store.NextLowAsync(cancellationToken).ConfigureAwait(false);
-                        _currentValue = new HiLoValue(nextLow, nextLow + _blockSize);
+                        nextValue = new HiLoValue(nextLow, nextLow + _blockSize);
+                        _currentValue = nextValue;
                     }
 
                     else

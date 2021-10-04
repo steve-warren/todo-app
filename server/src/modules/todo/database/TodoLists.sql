@@ -4,5 +4,6 @@ CREATE TABLE TodoLists
     OwnerId INT NOT NULL,
     Name VARCHAR(64) NOT NULL,
     Items VARCHAR(MAX) NOT NULL,
+    ArchiveState VARCHAR(16) NOT NULL,
     Version ROWVERSION NOT NULL
 )
