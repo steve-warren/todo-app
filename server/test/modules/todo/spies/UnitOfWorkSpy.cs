@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
 using System.Threading;
 using WarrenSoftware.TodoApp.Core.Domain;
+using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
 namespace todo_app_test
 {
-    public class UnitOfWorkSpy : Spy, IUnitOfWork
+    public class UnitOfWorkSpy : Spy, ITodoUnitOfWork
     {
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
