@@ -12,7 +12,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure
 {
     public class UserDbContext : DbContextBase
     {
-        public UserDbContext(DbContextOptions options, IEventBus eventBus) : base(options, eventBus) { }
+        public UserDbContext(DbContextOptions<UserDbContext> options, IEventBus eventBus) : base(options, eventBus) { }
 
         public DbSet<User> Users { get; private set; }
 
@@ -24,6 +24,8 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure
                      .HasColumnName("Id")
                      .ValueGeneratedNever();
 
+            users.Property<string>("_hashedPassword")
+                 .HasColumnName("HashedPassword");
 
             users.ToTable("Users");
         }

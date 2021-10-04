@@ -3,7 +3,7 @@ CREATE TABLE Users
     Id INT PRIMARY KEY NOT NULL,
     UserName VARCHAR(32) NOT NULL,
     Email VARCHAR(64) NOT NULL,
-    HasedPassword VARCHAR(64) NOT NULL,
+    HashedPassword VARCHAR(64) NOT NULL,
     FirstName VARCHAR(64) NOT NULL,
     LastName VARCHAR(64) NOT NULL,
     LastLoginDate DATETIMEOFFSET NULL,

@@ -62,6 +62,7 @@ namespace WarrenSoftware.TodoApp.Web
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
             services.AddDbContext<TodoDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());
+            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());
 
             services.AddScoped<IUnitOfWork>(_ => _.GetRequiredService<TodoDbContext>());
 

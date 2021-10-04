@@ -12,7 +12,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
 {
     public class TodoDbContext : DbContextBase
     {
-        public TodoDbContext(DbContextOptions options, IEventBus eventBus) : base(options, eventBus) { }
+        public TodoDbContext(DbContextOptions<TodoDbContext> options, IEventBus eventBus) : base(options, eventBus) { }
 
         public DbSet<TodoList> TodoLists { get; private set; }
         public DbSet<TodoItem> TodoItems { get; private set; }
@@ -61,8 +61,12 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
                          v => TodoItemPriority.Parse(v)
                      );
             
-            todoItems.Property<string>("_state")
-                     .HasColumnName("State");
+            todoItems.Property<TodoItemCompletedState>("_state")
+                     .HasColumnName("State")
+                     .HasConversion(
+                         v => v.Name,
+                         v => TodoItemCompletedState.Parse(v)
+                     );
 
             todoItems.ToTable("TodoItems");
         }
