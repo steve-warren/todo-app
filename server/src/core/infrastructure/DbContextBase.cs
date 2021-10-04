@@ -7,7 +7,7 @@ using WarrenSoftware.TodoApp.Core.Domain;
 
 namespace WarrenSoftware.TodoApp.Core.Infrastructure
 {
-    public abstract class DbContextBase : DbContext, IUnitOfWork
+    public abstract class DbContextBase : DbContext
     {
         private readonly IEventBus _eventBus;
 

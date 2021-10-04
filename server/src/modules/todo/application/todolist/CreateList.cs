@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
+using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo
 {
@@ -16,9 +17,9 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     {
         private readonly ITodoListRepository _repository;
         private readonly IIdentityService _identityService;
-        private readonly IUnitOfWork _uow;
+        private readonly ITodoUnitOfWork _uow;
 
-        public CreateListHandler(ITodoListRepository repository, IIdentityService identityService,  IUnitOfWork uow)
+        public CreateListHandler(ITodoListRepository repository, IIdentityService identityService,  ITodoUnitOfWork uow)
         {
             _repository = repository;
             _identityService = identityService;

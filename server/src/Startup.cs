@@ -5,8 +5,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -45,6 +47,9 @@ namespace WarrenSoftware.TodoApp.Web
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "todo_app_web", Version = "v1" });
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => { });
+
             services.AddScoped<ITodoListRepository, TodoListRepository>();
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();
             
@@ -64,9 +69,17 @@ namespace WarrenSoftware.TodoApp.Web
             services.AddDbContext<TodoDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());
             services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());
 
-            services.AddScoped<IUnitOfWork>(_ => _.GetRequiredService<TodoDbContext>());
+            services.AddScoped<ITodoUnitOfWork>(_ => _.GetRequiredService<TodoDbContext>());
+            services.AddScoped<IUserUnitOfWork>(_ => _.GetRequiredService<UserDbContext>());
 
             services.AddSingleton<IEventBus,InMemoryEventBus>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-XSRF-TOKEN";                               
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -78,8 +91,11 @@ namespace WarrenSoftware.TodoApp.Web
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "todo_app_web v1"));
             }
 
+            app.UseStaticFiles();
+            app.UseFileServer();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

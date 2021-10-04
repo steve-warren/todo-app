@@ -10,7 +10,7 @@ using WarrenSoftware.TodoApp.Modules.Users.Domain;
 
 namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure
 {
-    public class UserDbContext : DbContextBase
+    public class UserDbContext : DbContextBase, IUserUnitOfWork
     {
         public UserDbContext(DbContextOptions<UserDbContext> options, IEventBus eventBus) : base(options, eventBus) { }
 

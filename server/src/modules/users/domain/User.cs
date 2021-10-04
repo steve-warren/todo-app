@@ -35,7 +35,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Domain
 
             var now = clock.Now();
             LastLoginDate = now;
-            Apply( new UserLoggedIn { Id = Id, When = now });
+            Apply( new UserLoggedIn { UserId = Id, When = now });
 
             return AuthenticationResult.Success;
         }

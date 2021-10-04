@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WarrenSoftware.TodoApp.Core.Domain
+namespace WarrenSoftware.TodoApp.Core.Infrastructure
 {
     public interface IUnitOfWork
     {

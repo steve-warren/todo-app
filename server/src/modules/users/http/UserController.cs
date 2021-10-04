@@ -28,24 +28,34 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
                 PlaintextPassword = model.Password
             };
 
-            var authenticationSuccessful = await _mediator.Send(authenticateCommand);
+            var userId = await _mediator.Send(authenticateCommand);
 
-            if (authenticationSuccessful)
+            if (userId != -1)
             {
-                var getProfileQuery = new GetUserProfileQuery
+                var userProfileQuery = new GetUserProfileQuery
                 {
-                    Email = model.Email
+                    UserId = userId,
+                    OutputStream = Response.BodyWriter.AsStream()
                 };
 
-                Response.StatusCode = StatusCodes.Status200OK;
-
-                await _mediator.Send(getProfileQuery);
+                Response.ContentType = "application/json";
+                await _mediator.Send(userProfileQuery);
             }
 
             else
-            {
                 Response.StatusCode = StatusCodes.Status401Unauthorized;
-            }
+        }
+
+        [HttpGet("api/user/profile")]
+        public async Task GetUserProfileAsync()
+        {
+            var userProfileQuery = new GetUserProfileQuery
+            {
+                UserId = 500,
+                OutputStream = Response.BodyWriter.AsStream()
+            };
+
+            await _mediator.Send(userProfileQuery);
         }
     }
 }

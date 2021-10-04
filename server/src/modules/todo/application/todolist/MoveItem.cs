@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
+using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo
 {
@@ -16,9 +17,9 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     public class MoveItemHandler : AsyncRequestHandler<MoveItemCommand>
     {
         private readonly ITodoListRepository _lists;
-        private readonly IUnitOfWork _uow;
+        private readonly ITodoUnitOfWork _uow;
 
-        public MoveItemHandler(ITodoListRepository lists, IUnitOfWork uow)
+        public MoveItemHandler(ITodoListRepository lists, ITodoUnitOfWork uow)
         {
             _lists = lists;
             _uow = uow;

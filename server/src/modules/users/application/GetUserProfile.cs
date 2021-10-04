@@ -10,7 +10,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users
 {
     public class GetUserProfileQuery : IRequest
     {
-        public string Email { get; init; }
+        public int UserId { get; init; }
         public Stream OutputStream { get; init; } = Stream.Null;
     }
 
@@ -34,11 +34,11 @@ namespace WarrenSoftware.TodoApp.Modules.Users
                 FROM
                     Users
                 WHERE
-                    Email = @Email
-                FOR JSON AUTO
+                    Id = @UserId
+                FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER
             ", _connection);
 
-            command.Parameters.AddWithValue("@Email", request.Email);
+            command.Parameters.AddWithValue("@UserId", request.UserId);
 
             await _connection.OpenAsync(cancellationToken);
             await command.StreamUtf8TextAsync(request.OutputStream, cancellationToken);

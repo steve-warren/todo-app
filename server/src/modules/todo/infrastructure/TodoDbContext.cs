@@ -10,7 +10,7 @@ using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
 {
-    public class TodoDbContext : DbContextBase
+    public class TodoDbContext : DbContextBase, ITodoUnitOfWork
     {
         public TodoDbContext(DbContextOptions<TodoDbContext> options, IEventBus eventBus) : base(options, eventBus) { }
 

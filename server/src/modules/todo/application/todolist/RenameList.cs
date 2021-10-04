@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
+using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo
 {
@@ -15,9 +15,9 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
     public class RenameListHandler : AsyncRequestHandler<RenameListCommand>
     {
         private readonly ITodoListRepository _repository;
-        private readonly IUnitOfWork _uow;
+        private readonly ITodoUnitOfWork _uow;
 
-        public RenameListHandler(ITodoListRepository repository, IUnitOfWork uow)
+        public RenameListHandler(ITodoListRepository repository, ITodoUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
