@@ -34,7 +34,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
             _items.Insert(index: 0, itemId);
         }
 
-        public void MoveItem(int itemId, int position)
+        public void ArrangeItem(int itemId, int position)
         {
             var currentIndex = _items.IndexOf(itemId);
 

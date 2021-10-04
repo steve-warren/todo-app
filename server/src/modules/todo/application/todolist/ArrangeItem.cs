@@ -7,31 +7,31 @@ using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo
 {
-    public class MoveItemCommand : IRequest
+    public class ArrangeItemCommand : IRequest
     {
         public int ListId { get; init; }
         public int ItemId { get; init; }
         public int Position { get; init; }
     }
 
-    public class MoveItemHandler : AsyncRequestHandler<MoveItemCommand>
+    public class ArrangeItemHandler : AsyncRequestHandler<ArrangeItemCommand>
     {
         private readonly ITodoListRepository _lists;
         private readonly ITodoUnitOfWork _uow;
 
-        public MoveItemHandler(ITodoListRepository lists, ITodoUnitOfWork uow)
+        public ArrangeItemHandler(ITodoListRepository lists, ITodoUnitOfWork uow)
         {
             _lists = lists;
             _uow = uow;
         }
 
-        protected override async Task Handle(MoveItemCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(ArrangeItemCommand request, CancellationToken cancellationToken)
         {
             var list = await _lists.FindByIdAsync(request.ListId);
 
             if (list is null) return;
 
-            list.MoveItem(request.ItemId, request.Position);
+            list.ArrangeItem(request.ItemId, request.Position);
 
             await _uow.SaveChangesAsync(cancellationToken);
         }

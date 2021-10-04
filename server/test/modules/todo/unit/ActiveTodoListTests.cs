@@ -48,7 +48,7 @@ namespace todo_app_test
             list.AddItem(itemId: 2222);
             list.AddItem(itemId: 3333);
 
-            list.MoveItem(itemId: 3333, 1);
+            list.ArrangeItem(itemId: 3333, 1);
 
             list.Items
                 .Should()
