@@ -10,6 +10,7 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
     public abstract class DbContextBase : DbContext
     {
         private readonly IEventBus _eventBus;
+        private bool _isPending = false;
 
         public DbContextBase(DbContextOptions options, IEventBus eventBus) : base(options)
         {
@@ -18,22 +19,35 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            if (_isPending is true)
+                return - 1;
 
-            var domainEntities = ChangeTracker
-                .Entries<AggregateRoot>()
-                .Where(x => x.Entity.DomainEvents.Count > 0).ToList();
+            _isPending = true;
 
-            var domainEvents = new List<IDomainEvent>();
+            try
+            {
+                var domainEntities = ChangeTracker
+                    .Entries<AggregateRoot>()
+                    .Where(x => x.Entity.DomainEvents.Count > 0).ToList();
 
-            foreach (var entity in domainEntities)
-                foreach (var domainEvent in entity.Entity.DomainEvents)
-                    domainEvents.Add(domainEvent);
+                var domainEvents = new List<IDomainEvent>();
 
-            await _eventBus.PublishAsync(domainEvents, cancellationToken).ConfigureAwait(false);
-            domainEntities.ForEach(entity => entity.Entity.ClearDomainEvents());
+                foreach (var entity in domainEntities)
+                    foreach (var domainEvent in entity.Entity.DomainEvents)
+                        domainEvents.Add(domainEvent);
 
-            return result;
+                await _eventBus.PublishAsync(domainEvents, cancellationToken).ConfigureAwait(false);
+                domainEntities.ForEach(entity => entity.Entity.ClearDomainEvents());
+
+                var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+                return result;
+            }
+
+            finally
+            {
+                _isPending = false;
+            }
         }
     }
 }

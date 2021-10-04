@@ -19,7 +19,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
             Notes = notes;
             Reminder = reminder;
 
-            Apply(new TodoItemCreated { Name = name, ListId = listId, Id = id, Priority = priority, Reminder = Reminder });
+            Apply(new TodoItemCreated { Name = name, ListId = listId, ItemId = id, Priority = priority, Reminder = Reminder });
         }
 
         protected TodoItem() { }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
@@ -26,17 +27,19 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
                      .HasColumnName("Id")
                      .ValueGeneratedNever();
 
+            var converter = new ValueConverter<List<int>,string>(
+                v => JsonSerializer.Serialize(v, null),
+                v => JsonSerializer.Deserialize<List<int>>(v, null)
+            );
+
             var comparer = new ValueComparer<List<int>>(
                             (c1, c2) => c1.SequenceEqual(c2),
                             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                             c => new List<int>(c));
 
-            todoLists.Property(e => e.Items)
+            todoLists.Property("_items")
                      .HasColumnName("Items")
-                     .HasConversion(
-                         v => JsonSerializer.Serialize(v, null),
-                         v => JsonSerializer.Deserialize<List<int>>(v, null),
-                         comparer);
+                     .HasConversion(converter, comparer);
             
             todoLists.Property<ArchiveState>("_archiveState")
                      .HasColumnName("ArchiveState")

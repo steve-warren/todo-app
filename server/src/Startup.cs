@@ -72,7 +72,7 @@ namespace WarrenSoftware.TodoApp.Web
             services.AddScoped<ITodoUnitOfWork>(_ => _.GetRequiredService<TodoDbContext>());
             services.AddScoped<IUserUnitOfWork>(_ => _.GetRequiredService<UserDbContext>());
 
-            services.AddSingleton<IEventBus,InMemoryEventBus>();
+            services.AddScoped<IEventBus,InMemoryEventBus>();
 
             services.AddHttpContextAccessor();
 
