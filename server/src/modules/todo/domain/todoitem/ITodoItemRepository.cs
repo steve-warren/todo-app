@@ -5,8 +5,6 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
     public interface ITodoItemRepository
     {
         Task<TodoItem> FindByIdAsync(int id);
-        Task<IncompleteTodoItem> FindIncompleteByIdAsync(int id);
-        Task<CompletedTodoItem> FindCompletedByIdAsync(int id);
         void Add(TodoItem item);
         void Remove(TodoItem item);
     }

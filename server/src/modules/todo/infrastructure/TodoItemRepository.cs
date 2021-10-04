@@ -26,15 +26,5 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
         {
             return items.FirstOrDefaultAsync(item => item.Id == id);
         }
-
-        public Task<CompletedTodoItem> FindCompletedByIdAsync(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IncompleteTodoItem> FindIncompleteByIdAsync(int id)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

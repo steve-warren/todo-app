@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Data.SqlClient;
+using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo
@@ -34,13 +35,14 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
                 WHERE
                     OwnerId = @OwnerId
                         AND
-                    ArchiveState = 'NotArchived'
+                    ArchiveState = @ArchiveState
                 ORDER BY
                     Name ASC
                 FOR JSON PATH
             ", _connection);
 
             command.Parameters.AddWithValue("@OwnerId", request.OwnerId);
+            command.Parameters.AddWithValue("@ArchiveState", ArchiveState.NotArchived.Name);
 
             await _connection.OpenAsync(cancellationToken);
             await command.StreamUtf8TextAsync(request.OutputStream, cancellationToken);

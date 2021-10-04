@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 
@@ -37,10 +38,21 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
                          v => JsonSerializer.Deserialize<List<int>>(v, null),
                          comparer);
             
-            todoLists.Property<string>("_archiveState")
-                     .HasColumnName("ArchiveState");
+            todoLists.Property<ArchiveState>("_archiveState")
+                     .HasColumnName("ArchiveState")
+                     .HasConversion(
+                         v => v.Name,
+                         v => ArchiveState.Parse(v)
+                     );
 
             todoLists.ToTable("TodoLists");
+
+            todoItems.Property<ArchiveState>("_archiveState")
+                     .HasColumnName("ArchiveState")
+                     .HasConversion(
+                         v => v.Name,
+                         v => ArchiveState.Parse(v)
+                     );
             
             todoItems.Property(e => e.Priority)
                      .HasColumnName("Priority")

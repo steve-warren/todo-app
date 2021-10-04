@@ -18,15 +18,5 @@ namespace todo_app_test
         public void Remove(TodoItem item) => Items.Remove(item);
 
         public Task<TodoItem> FindByIdAsync(int id) => Task.FromResult(Items.FirstOrDefault(l => l.Id == id));
-
-        public Task<CompletedTodoItem> FindCompletedByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IncompleteTodoItem> FindIncompleteByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

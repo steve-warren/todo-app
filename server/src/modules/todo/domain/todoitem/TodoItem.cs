@@ -6,7 +6,8 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
     public class TodoItem : AggregateRoot
     {
         #pragma warning disable IDE0052 // mapped to ef core shadow property
-        protected string _state = "";
+        private TodoItemCompletedState _state = TodoItemCompletedState.Incomplete;
+        private ArchiveState _archiveState = ArchiveState.NotArchived;
 
         public TodoItem(string name, int listId, int ownerId, TodoItemPriority priority, int id, string notes, DateTimeOffset? reminder)
         {
@@ -17,7 +18,6 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
             Id = id;
             Notes = notes;
             Reminder = reminder;
-            _state = TodoItemStates.Incomplete;
 
             Apply(new TodoItemCreated { Name = name, ListId = listId, Id = id, Priority = priority, Reminder = Reminder });
         }
@@ -54,6 +54,20 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
         public void WriteNotes(string text)
         {
             Notes = text;
+        }
+
+        public void ToggleCompletedState()
+        {
+            if(_state == TodoItemCompletedState.Incomplete)
+                _state = TodoItemCompletedState.Completed;
+            
+            else if (_state == TodoItemCompletedState.Completed)
+                _state = TodoItemCompletedState.Incomplete;
+        }
+
+        public void Archive()
+        {
+            _archiveState = ArchiveState.Archived;
         }
     }
 }

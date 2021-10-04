@@ -8,5 +8,6 @@ CREATE TABLE TodoItems
     Reminder DATETIMEOFFSET NULL,
     Priority VARCHAR(8) NOT NULL,
     State VARCHAR(16) NOT NULL,
+    ArchiveState VARCHAR(16) NOT NULL,
     Version ROWVERSION NOT NULL
 )
