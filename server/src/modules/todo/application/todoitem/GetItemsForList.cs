@@ -8,23 +8,23 @@ using WarrenSoftware.TodoApp.Core.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo
 {
-    public class GetItemsQuery : IRequest
+    public class GetItemsForListQuery : IRequest
     {
         public int OwnerId { get; init; }
         public int ListId { get; init; }
         public Stream OutputStream { get; init; } = Stream.Null;
     }
 
-    public class GetItemsHandler : IRequestHandler<GetItemsQuery>
+    public class GetItemsForListHandler : IRequestHandler<GetItemsForListQuery>
     {
         private readonly SqlConnection _connection;
 
-        public GetItemsHandler(SqlConnection connection)
+        public GetItemsForListHandler(SqlConnection connection)
         {
             _connection = connection;
         }
 
-        public async Task<Unit> Handle(GetItemsQuery request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(GetItemsForListQuery request, CancellationToken cancellationToken)
         {
             using var command = new SqlCommand(@"
                 SELECT

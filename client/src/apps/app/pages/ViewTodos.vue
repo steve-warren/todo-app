@@ -33,16 +33,6 @@
                     </md-select>
                 </md-field>
                 <md-field>
-                    <label>List</label>
-                        <md-select v-model="createTaskDialog.model.listId">
-                            <md-option
-                                v-for="list in lists"
-                                v-bind:key="list.Id"
-                                v-bind:value="list.Id"
-                                >{{ list.Name }}</md-option>
-                        </md-select>
-                </md-field>
-                <md-field>
                     <label>Notes</label>
                     <md-textarea v-model="createTaskDialog.model.notes"></md-textarea>
                 </md-field>
@@ -63,7 +53,6 @@
     },
     data: () => ({
         items: [],
-        lists: [],
         createTaskDialog:
         {
             show: false,
@@ -79,30 +68,24 @@
     }),
     async created() {
         const listId = parseInt(this.$route.params.listId);
+        this.createTaskDialog.model.listId = listId;
         await this.loadItems(listId);
-        await this.loadLists();
     },
     watch: {
         async $route(to)
         {
             const listId = parseInt(to.params.listId);
             await this.loadItems(listId);
-            await this.loadLists();
         }
     },
     methods: {
       onSelect (items) {
         this.selected = items
       },
-      async loadLists()
-      {
-          const response = await axios.get('api/todo/lists');
-
-          if (response.data)
-            this.lists = response.data;
-      },
       async loadItems(listId)
       {
+          this.createTaskDialog.model.listId = listId;
+
         var url = '';
 
         if (listId > 0) url = `/api/todo/items?listId=${listId}`;
@@ -118,7 +101,22 @@
         },
         async create()
         {
-            await axios.post('/api/todo/items', this.createTaskDialog.model);
+            var result = await axios.post('/api/todo/items', this.createTaskDialog.model);
+
+            if (result.status == 200)
+                this.clearForm();
+        },
+        clearForm()
+        {
+            var listId = this.createTaskDialog.model.listId;
+
+            this.createTaskDialog.model = {
+                name: '',
+                reminder: '',
+                priority: '',
+                listId: listId,
+                notes: ''
+            };
         }
     },
     };

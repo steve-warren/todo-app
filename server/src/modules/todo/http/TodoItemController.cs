@@ -18,16 +18,30 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
         }
 
         [HttpGet("api/todo/items")]
-        public async Task GetAllTodoItemsAsync([FromQuery] int listId)
+        public async Task GetAllTodoItemsAsync([FromQuery] int? listId)
         {
             Response.ContentType = "application/json";
 
-            var query = new GetItemsQuery
+            IRequest query;
+            
+            if (listId.HasValue)
             {
-                OwnerId = User.GetUserId(),
-                ListId = listId,
-                OutputStream = Response.Body
-            };
+                query = new GetItemsForListQuery
+                {
+                    OwnerId = User.GetUserId(),
+                    ListId = listId.Value,
+                    OutputStream = Response.Body
+                };
+            }
+
+            else
+            {
+                query = new GetAllItemsQuery
+                {
+                    OwnerId = User.GetUserId(),
+                    OutputStream = Response.Body
+                };
+            }
 
             await _mediator.Send(query);
         }
