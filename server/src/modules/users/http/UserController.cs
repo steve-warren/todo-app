@@ -49,14 +49,16 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
 
         [HttpDelete("api/user/session")]
         [AllowAnonymous]
-        public Task SignOutUserAsync()
+        public async Task SignOutUserAsync()
         {
             var command = new LogOutUserCommand
             {
                 UserId = User.GetUserId()
             };
 
-            return _mediator.Send(command);
+            await _mediator.Send(command);
+
+            Response.Headers["Location"] = "/";
         }
 
         [HttpGet("api/user/profile")]

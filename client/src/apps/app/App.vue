@@ -62,14 +62,16 @@ export default {
     lists: []
   }),
   async created() {
-    const response = await axios.get("/api/todo/lists");
+    const response = await axios.get('/api/todo/lists');
 
     this.lists = response.data;
   },
   methods: {
     async signOut()
     {
+      const response = await axios.delete('/api/user/session');
 
+      window.location.replace(response.headers.location);
     }
   },
 };
