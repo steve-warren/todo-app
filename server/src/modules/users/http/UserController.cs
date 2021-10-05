@@ -38,7 +38,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
                     OutputStream = Response.BodyWriter.AsStream()
                 };
 
-                Response.Headers["Location"] = "/app.html";
+                Response.Headers["Location"] = "/app.html#/tasks";
                 Response.ContentType = "application/json";
                 await _mediator.Send(userProfileQuery);
             }
