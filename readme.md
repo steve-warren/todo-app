@@ -1,7 +1,7 @@
 # Todo App
 
 ## Technology Stack
-    ### Backend
+    Backend
 
     1. .NET Core 5.0
     2. ASPNET Core 5.0
@@ -12,7 +12,7 @@
     7. XUnit
     8. System.Text.JSON
 
-    ### Frontend
+    Frontend
 
     1. vuejs
     2. vue material
