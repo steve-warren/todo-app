@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -20,7 +21,7 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             if (_isPending is true)
-                return - 1;
+                throw new InvalidOperationException($"Cannot make call to {nameof(SaveChangesAsync)} during a pending operation.");
 
             _isPending = true;
 
