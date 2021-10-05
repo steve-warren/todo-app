@@ -9,16 +9,18 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Domain
     {
         private string _hashedPassword = "";
 
-        public User(int id, string email, string firstName, string lastName)
+        public User(int id, string email, string userName, string firstName, string lastName)
         {
             Id = id;
             Email = email;
+            UserName = userName;
             FirstName = firstName;
             LastName = lastName;
         }
         
         private User() { }
         public string Email { get; private set; } = "";
+        public string UserName { get; private set; } = "";
         public string FirstName { get; private set; } = "";
         public string LastName { get; private set; } = "";
         public DateTimeOffset? LastLoginDate { get; private set; }

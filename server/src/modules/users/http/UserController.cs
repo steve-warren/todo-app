@@ -24,7 +24,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
         {
             var authenticateCommand = new AuthenticateCommand
             {
-                Email = model.Email,
+                UserName = model.UserName,
                 PlaintextPassword = model.Password
             };
 
@@ -38,6 +38,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
                     OutputStream = Response.BodyWriter.AsStream()
                 };
 
+                Response.Headers["Location"] = "/app.html";
                 Response.ContentType = "application/json";
                 await _mediator.Send(userProfileQuery);
             }
@@ -68,6 +69,19 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
             };
 
             await _mediator.Send(userProfileQuery);
+        }
+
+        [HttpGet("api/user/session/token")]
+        public async Task<IActionResult> GetCsrfTokenAsync()
+        {
+            var command = new GetCsrfToken
+            {
+                UserId = User.GetUserId()
+            };
+
+            var token = await _mediator.Send(command);
+
+            return Ok(new { Token = token });
         }
     }
 }

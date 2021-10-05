@@ -5,6 +5,6 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Domain
     public interface IUserRepository
     {
         Task<User> FindByIdAsync(int id);
-        Task<User> FindByEmailAsync(string email);
+        Task<User> FindByUserNameAsync(string userName);
     }
 }
