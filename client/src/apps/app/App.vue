@@ -10,7 +10,7 @@
               </md-avatar>
               <md-menu-content>
                 <md-menu-item>
-                  <strong>Foo Bar</strong>
+                  <strong>{{profile.UserName}}</strong>
                 </md-menu-item>
                 <md-divider></md-divider>
                 <md-menu-item @click="signOut">
@@ -59,14 +59,30 @@ export default {
   components: {
   },
   data: () => ({
-    lists: []
+    lists: [],
+    profile:
+    {
+
+    }
   }),
   async created() {
-    const response = await axios.get('/api/todo/lists');
-
-    this.lists = response.data;
+    await Promise.all([this.getProfile(), this.getLists()]);
   },
   methods: {
+    async getProfile()
+    {
+      const response = await axios.get('api/user/profile');
+
+      if (response.data)
+        this.profile = response.data;
+    },
+    async getLists()
+    {
+      const response = await axios.get('/api/todo/lists');
+
+      if (response.data)
+        this.lists = response.data;
+    },
     async signOut()
     {
       const response = await axios.delete('/api/user/session');
