@@ -73,7 +73,7 @@ export default {
         if (response.status == 200)
         {
           await this.setToken();
-          window.location.replace(response.data.url);
+          window.location.replace(response.headers.location);
         }
       }
 

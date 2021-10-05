@@ -22,6 +22,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users
         private readonly IAuthenticator _authenticator;
         private readonly ISystemClock _clock;
         private readonly ILogger<AuthenticateHandler> _logger;
+        private const int INVALID_USER_ID = -1;
 
         public AuthenticateHandler(IUserRepository users, IUserUnitOfWork uow, IAuthenticator authenticator, ISystemClock clock, ILogger<AuthenticateHandler> logger)
         {
@@ -38,19 +39,22 @@ namespace WarrenSoftware.TodoApp.Modules.Users
 
             var user = await _users.FindByUserNameAsync(request.UserName);
 
-            var authenticationResult = user.Login(_clock, _authenticator, request.PlaintextPassword);
-
-            await _uow.SaveChangesAsync(cancellationToken);
-
-            if (authenticationResult == AuthenticationResult.Success)
+            if (user is not null)
             {
-                _logger.LogInformation($"Authentication successful for user '{request.UserName}'.");
-                return user.Id;
+                var authenticationResult = user.Login(_clock, _authenticator, request.PlaintextPassword);
+
+                await _uow.SaveChangesAsync(cancellationToken);
+
+                if (authenticationResult == AuthenticationResult.Success)
+                {
+                    _logger.LogInformation($"Authentication successful for user '{request.UserName}'.");
+                    return user.Id;
+                }
             }
 
             _logger.LogInformation($"Authentication failed for user '{request.UserName}'.");
 
-            return -1;
+            return INVALID_USER_ID;
         }
     }
 }

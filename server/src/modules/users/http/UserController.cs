@@ -71,10 +71,10 @@ namespace WarrenSoftware.TodoApp.Modules.Users.Http
             await _mediator.Send(userProfileQuery);
         }
 
-        [HttpGet("api/user/session/token")]
-        public async Task<IActionResult> GetCsrfTokenAsync()
+        [HttpPost("api/user/session/token")]
+        public async Task<IActionResult> SetCsrfTokenAsync()
         {
-            var command = new GetCsrfToken
+            var command = new GetAndSetCsrfToken
             {
                 UserId = User.GetUserId()
             };

@@ -7,24 +7,24 @@ using Microsoft.Extensions.Logging;
 
 namespace WarrenSoftware.TodoApp.Modules.Users
 {
-    public class GetCsrfToken : IRequest<string?>
+    public class GetAndSetCsrfToken : IRequest<string?>
     {
         public int UserId { get; init; }
     }
 
-    public class SetCsrfTokenHandler : IRequestHandler<GetCsrfToken,string?>
+    public class GetAndSetCsrfTokenHandler : IRequestHandler<GetAndSetCsrfToken,string?>
     {
         private readonly IAntiforgery _antiforgery;
-        private readonly ILogger<SetCsrfTokenHandler> _logger;
+        private readonly ILogger<GetAndSetCsrfTokenHandler> _logger;
         private readonly HttpContext _httpContext;
 
-        public SetCsrfTokenHandler(IAntiforgery antiforgery, IHttpContextAccessor httpContextAccessor, ILogger<SetCsrfTokenHandler> logger)
+        public GetAndSetCsrfTokenHandler(IAntiforgery antiforgery, IHttpContextAccessor httpContextAccessor, ILogger<GetAndSetCsrfTokenHandler> logger)
         {
             _antiforgery = antiforgery;
             _httpContext = httpContextAccessor.HttpContext;
             _logger = logger;
         }
-        public Task<string?> Handle(GetCsrfToken request, CancellationToken cancellationToken)
+        public Task<string?> Handle(GetAndSetCsrfToken request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"CSRF token requested for user '{request.UserId}'.");
             
