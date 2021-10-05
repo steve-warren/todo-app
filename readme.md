@@ -11,6 +11,8 @@
     6. BCrypt
     7. XUnit
     8. System.Text.JSON
+    9. FluentValidation
+    10. 
 
     Frontend
 
@@ -28,6 +30,7 @@
     6. Clean Architecture (Monolithic)
     7. Aggregate Roots, Entities, Value Objects
     8. Bounded Contexts
+    9. Dependency Injection and IoC
 
 ### Notes
     1. Domain objects are PI
