@@ -1,40 +1,50 @@
 <template>
   <div class="page-container">
     <md-app md-waterfall md-mode="fixed">
-      <md-app-toolbar class="md-primary">
-        <span class="md-title">My Title</span>
+      <md-app-toolbar class="md-transparent">
+        <div class="md-toolbar-section-end">
+          <div>
+            <md-menu md-align-trigger>
+              <md-avatar class="md-avatar-icon" md-menu-trigger>
+                <md-icon>person</md-icon>
+              </md-avatar>
+              <md-menu-content>
+                <md-menu-item>
+                  <strong>Foo Bar</strong>
+                </md-menu-item>
+                <md-divider></md-divider>
+                <md-menu-item @click="signOut">
+                  <span>Sign Out</span>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+        </div>
       </md-app-toolbar>
 
       <md-app-drawer md-permanent="full">
         <md-toolbar class="md-transparent" md-elevation="0">
-          Navigation
+
         </md-toolbar>
+        <md-list :md-expand-single="false">
+          <md-list-item md-expand :md-expanded="true">
+            <span class="md-list-item-text">Tasks</span>
+            <md-list slot="md-expand">
+              <md-list-item :to="{ name: 'view-all', params: { listId: -1 } }">
+                <md-icon>all_inbox</md-icon>
+                <span class="md-list-item-text">All Tasks</span>
+              </md-list-item>
 
-        <md-list>
-          <md-list-item>
-            <md-icon>all_inbox</md-icon>
-            <span class="md-list-item-text">All Tasks</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>delete</md-icon>
-            <span class="md-list-item-text">Trash</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>error</md-icon>
-            <span class="md-list-item-text">Spam</span>
-          </md-list-item>
-
-          <md-list-item v-for="list in lists" v-bind:key="list.Id">
-            <md-icon>label</md-icon>
-            <span class="md-list-item-text">{{list.Name}}</span>
+              <md-list-item class="menu-item" v-for="list in lists" v-bind:key="list.Id" :to="{ name: 'view-list', params: { listId: list.Id } }">
+                <md-icon>label</md-icon>
+                <span class="md-list-item-text">{{list.Name}}</span>
+              </md-list-item>
+            </md-list>
           </md-list-item>
         </md-list>
       </md-app-drawer>
-
-      <md-app-content>
-        <p>Hello, world</p>
+      <md-app-content style="padding: 0px; padding-left: -16px; margin: 0px;">
+        <router-view></router-view>
       </md-app-content>
     </md-app>
   </div>
@@ -57,19 +67,29 @@ export default {
     this.lists = response.data;
   },
   methods: {
+    async signOut()
+    {
+
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-  .md-drawer
-  {
-    width: 230px;
-    max-width: calc(100vw - 125px);
-  }
+.md-drawer
+{
+  width: 230px;
+  max-width: calc(100vw - 125px);
+}
 
 .md-app
 {
   min-height: 100vh;
 }
+
+.el-menu /deep/ .md-list-item-content
+{
+  justify-content: normal;
+}
+
 </style>
