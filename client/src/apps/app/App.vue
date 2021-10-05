@@ -24,7 +24,7 @@
 
       <md-app-drawer md-permanent="full">
         <md-toolbar class="md-transparent" md-elevation="0">
-
+          <span class="md-headline">Todo App</span>
         </md-toolbar>
         <md-list :md-expand-single="false">
           <md-list-item md-expand :md-expanded="true">

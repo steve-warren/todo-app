@@ -9,6 +9,10 @@
 
         <md-table-row slot="md-table-row" slot-scope="{ item }" md-auto-select>
             <md-table-cell md-label="Name"><strong>{{ item.Name }}</strong></md-table-cell>
+            <md-table-cell md-label="Notes"><span class="md-subheading">{{ item.Notes }}</span></md-table-cell>
+            <md-table-cell md-label="Priority"><span class="md-subheading">{{ item.Priority }}</span></md-table-cell>
+            <md-table-cell md-label="Reminder"><span class="md-caption">Due in {{ formatDateDistance(item.Reminder) }}</span></md-table-cell>
+            
         </md-table-row>
         </md-table>
         <md-dialog :md-active.sync="createTaskDialog.show">
@@ -33,6 +37,16 @@
                     </md-select>
                 </md-field>
                 <md-field>
+                    <label>List</label>
+                        <md-select v-model="createTaskDialog.model.listId">
+                            <md-option
+                                v-for="list in lists"
+                                v-bind:key="list.Id"
+                                v-bind:value="list.Id"
+                                >{{ list.Name }}</md-option>
+                        </md-select>
+                </md-field>
+                <md-field>
                     <label>Notes</label>
                     <md-textarea v-model="createTaskDialog.model.notes"></md-textarea>
                 </md-field>
@@ -46,6 +60,7 @@
 
 <script>
     import axios from 'axios';
+    import { formatDistance, parseISO, format } from "date-fns";
 
     export default {
     name: "App",
@@ -53,6 +68,7 @@
     },
     data: () => ({
         items: [],
+        lists: [],
         createTaskDialog:
         {
             show: false,
@@ -68,19 +84,30 @@
     }),
     async created() {
         const listId = parseInt(this.$route.params.listId);
-        this.createTaskDialog.model.listId = listId;
         await this.loadItems(listId);
+        await this.loadLists();
     },
     watch: {
         async $route(to)
         {
             const listId = parseInt(to.params.listId);
             await this.loadItems(listId);
+            await this.loadLists();
         }
     },
     methods: {
+        formatDateDistance(date) {
+        return formatDistance(parseISO(date), new Date());
+        },
       onSelect (items) {
         this.selected = items
+      },
+      async loadLists()
+      {
+          const response = await axios.get('api/todo/lists');
+
+          if (response.data)
+            this.lists = response.data;
       },
       async loadItems(listId)
       {
