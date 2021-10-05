@@ -14,7 +14,7 @@ namespace todo_app_test
         [Fact]
         public void Valid_Password_Should_Authenticate()
         {
-            var user = new User(id: 1, email: "", firstName: "", lastName: "");
+            var user = new User(id: 1, email: "", userName: "", firstName: "", lastName: "");
             var authenticator = new MockAuthenticator { AuthenticationResultShouldBe = true };
 
             user.Login(_clock, authenticator, plaintextPassword: "foo")
@@ -25,7 +25,7 @@ namespace todo_app_test
         [Fact]
         public void Invalid_Password_Should_Not_Authenticate()
         {
-            var user = new User(id: 1, email: "", firstName: "", lastName: "");
+            var user = new User(id: 1, email: "", userName: "", firstName: "", lastName: "");
             var authentiator = new MockAuthenticator { AuthenticationResultShouldBe = false };
 
             user.Login(_clock, authentiator, plaintextPassword: "foo")
@@ -36,7 +36,7 @@ namespace todo_app_test
         [Fact]
         public void Successful_Authentication_Should_Update_Last_Login_Date()
         {
-            var user = new User(id: 1, email: "", firstName: "", lastName: "");
+            var user = new User(id: 1, email: "", userName: "", firstName: "", lastName: "");
             var authenticator = new MockAuthenticator { AuthenticationResultShouldBe = true };
 
             user.Login(_clock, authenticator, plaintextPassword: "foo");
@@ -49,7 +49,7 @@ namespace todo_app_test
         [Fact]
         public void Successful_Authentication_Should_Raise_Event()
         {
-            var user = new User(id: 1, email: "", firstName: "", lastName: "");
+            var user = new User(id: 1, email: "", userName: "", firstName: "", lastName: "");
             var authenticator = new MockAuthenticator { AuthenticationResultShouldBe = true };
 
             user.Login(_clock, authenticator, plaintextPassword: "foo");
