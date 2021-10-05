@@ -8,13 +8,13 @@ module.exports = {
             entry: 'src/apps/sign-in/main.js',
             template: 'public/sign-in.html',
             filename: 'index.html',
-            title: 'Sign In',
+            title: 'Todo App - Sign In',
         },
-        /*students: {
-            entry: 'src/apps/students/main.js',
-            template: 'public/students.html',
-            filename: 'students.html',
-            title: 'Students',
-        }*/
+        app: {
+            entry: 'src/apps/app/main.js',
+            template: 'public/app.html',
+            filename: 'app.html',
+            title: 'Todo App',
+        }
     }
 }

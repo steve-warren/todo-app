@@ -7,6 +7,7 @@ using WarrenSoftware.TodoApp.Core.Infrastructure;
 namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 {
     [ApiController]
+    [Authorize]
 
     public class TodoListController : ControllerBase
     {
@@ -24,7 +25,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 
             var query = new GetAllListsQuery
             {
-                OwnerId = 1,//User.GetUserId(),
+                OwnerId = User.GetUserId(),
                 OutputStream = Response.Body
             };
 
@@ -37,7 +38,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
             var command = new CreateListCommand
             {
                 Name = model.Name,
-                OwnerId = 1
+                OwnerId = User.GetUserId()
             };
 
             var id = await _mediator.Send(command);

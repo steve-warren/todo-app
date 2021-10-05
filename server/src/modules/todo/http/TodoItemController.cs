@@ -7,6 +7,7 @@ using WarrenSoftware.TodoApp.Core.Infrastructure;
 namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 {
     [ApiController]
+    [Authorize]
     public class TodoItemController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -23,7 +24,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
 
             var query = new GetItemsQuery
             {
-                OwnerId = 1,//User.GetUserId(),
+                OwnerId = User.GetUserId(),
                 ListId = listId,
                 OutputStream = Response.Body
             };
@@ -41,7 +42,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Http
                 Notes = model.Notes,
                 Priority = model.Priority,
                 Reminder = model.Reminder,
-                OwnerId = 1
+                OwnerId = User.GetUserId()
             };
 
             var id = await _mediator.Send(command);
