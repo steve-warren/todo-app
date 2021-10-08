@@ -12,7 +12,7 @@
     7. XUnit
     8. System.Text.JSON
     9. FluentValidation
-    10. 
+    10. FluentAssertions
 
     Frontend
 
