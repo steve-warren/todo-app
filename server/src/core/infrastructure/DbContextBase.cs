@@ -27,26 +27,27 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
 
             try
             {
+                var eventsRaised = false;
+
                 do
                 {
-                    var domainEvents = new List<IDomainEvent>();
-
+                    eventsRaised = false;
+                    
                     var domainEntities = ChangeTracker
                         .Entries<AggregateRoot>()
                         .Select(x => x.Entity);
 
                     foreach (var entity in domainEntities)
                     {
-                        domainEvents.AddRange(entity.DomainEvents);
-                        entity.ClearDomainEvents();
+                        if (entity.DomainEvents.Count > 0)
+                        {
+                            eventsRaised = true;
+                            await _eventBus.PublishAsync(entity.DomainEvents, cancellationToken).ConfigureAwait(false);
+                            entity.ClearDomainEvents();
+                        }
                     }
 
-                    if (domainEvents.Count > 0)
-                        await _eventBus.PublishAsync(domainEvents, cancellationToken).ConfigureAwait(false);
-                    
-                    else
-                        break;
-                } while(true);
+                } while(eventsRaised);
 
                 var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

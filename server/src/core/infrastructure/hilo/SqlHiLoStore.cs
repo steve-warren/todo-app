@@ -7,19 +7,15 @@ namespace WarrenSoftware.TodoApp.Core.Infrastructure
     public class SqlHiLoStore : IHiLoStore
     {
         private readonly SqlConnection _connection;
-        private readonly string _sequenceName;
 
-        public SqlHiLoStore(SqlConnection connection, string sequenceName)
+        public SqlHiLoStore(SqlConnection connection)
         {
             _connection = connection;
-            _sequenceName = sequenceName;
         }
 
         public async Task<int> NextLowAsync(CancellationToken cancellationToken)
         {
-            using var command = new SqlCommand(@$"
-            SELECT NEXT VALUE FOR {_sequenceName}
-            ", _connection);
+            using var command = new SqlCommand(@$"SELECT NEXT VALUE FOR HiLoSequence", _connection);
 
             await _connection.OpenAsync(cancellationToken);
             var low = (int) await command.ExecuteScalarAsync(cancellationToken);

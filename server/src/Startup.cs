@@ -62,7 +62,7 @@ namespace WarrenSoftware.TodoApp.Web
 
             services.AddSingleton(_ => new HiLoState(10));
             services.AddScoped<IIdentityService, HiLoIdentityService>();
-            services.AddScoped<IHiLoStore, SqlHiLoStore>(_ => new SqlHiLoStore(_.GetRequiredService<SqlConnection>(), "HiLoSequence"));
+            services.AddScoped<IHiLoStore, SqlHiLoStore>();
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
