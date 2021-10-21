@@ -38,4 +38,4 @@
 
 ### Demo
 
-https://boring-todo-central-web.azurewebsites.net/
+https://todo.boringcloud.app
