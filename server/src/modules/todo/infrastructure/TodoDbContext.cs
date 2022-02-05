@@ -28,8 +28,8 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Infrastructure
                      .ValueGeneratedNever();
 
             var converter = new ValueConverter<List<int>,string>(
-                v => JsonSerializer.Serialize(v, null),
-                v => JsonSerializer.Deserialize<List<int>>(v, null)
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?) default),
+                v => JsonSerializer.Deserialize<List<int>>(v, (JsonSerializerOptions?) default)
             );
 
             var comparer = new ValueComparer<List<int>>(
