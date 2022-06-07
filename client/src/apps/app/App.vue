@@ -105,7 +105,7 @@ export default {
   min-height: 100vh;
 }
 
-.el-menu /deep/ .md-list-item-content
+.el-menu .md-list-item-content
 {
   justify-content: normal;
 }
