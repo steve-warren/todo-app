@@ -4,7 +4,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo.Domain;
 
 public class TodoList : AggregateRoot
 {
-#pragma warning disable IDE0052 // mapped to ef core shadow property
+    #pragma warning disable IDE0052 // mapped to ef core shadow property
     private ArchiveState _archiveState = ArchiveState.NotArchived;
     private readonly List<int> _items;
 
