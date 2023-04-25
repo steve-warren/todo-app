@@ -1,8 +1,6 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WarrenSoftware.TodoApp.Core.Infrastructure;
 
 namespace WarrenSoftware.TodoApp.Modules.Health.Http
 {
