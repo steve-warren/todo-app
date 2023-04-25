@@ -74,7 +74,7 @@ public class UserController : ControllerBase
     [HttpPost("api/user/session/token")]
     public async Task<IActionResult> SetCsrfTokenAsync()
     {
-        var command = new GetAndSetCsrfToken
+        var command = new GetAndSetCsrfTokenCommand
         {
             UserId = User.GetUserId()
         };

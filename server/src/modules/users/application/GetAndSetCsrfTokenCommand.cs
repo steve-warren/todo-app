@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Antiforgery;
 
 namespace WarrenSoftware.TodoApp.Modules.Users;
 
-public class GetAndSetCsrfToken : IRequest<string?>
+public class GetAndSetCsrfTokenCommand : IRequest<string?>
 {
     public int UserId { get; init; }
 }
 
-public class GetAndSetCsrfTokenHandler : IRequestHandler<GetAndSetCsrfToken, string?>
+public class GetAndSetCsrfTokenHandler : IRequestHandler<GetAndSetCsrfTokenCommand, string?>
 {
     private readonly IAntiforgery _antiforgery;
     private readonly ILogger<GetAndSetCsrfTokenHandler> _logger;
@@ -20,7 +20,7 @@ public class GetAndSetCsrfTokenHandler : IRequestHandler<GetAndSetCsrfToken, str
         _httpContext = httpContextAccessor.HttpContext;
         _logger = logger;
     }
-    public Task<string?> Handle(GetAndSetCsrfToken request, CancellationToken cancellationToken)
+    public Task<string?> Handle(GetAndSetCsrfTokenCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"CSRF token requested for user '{request.UserId}'.");
 

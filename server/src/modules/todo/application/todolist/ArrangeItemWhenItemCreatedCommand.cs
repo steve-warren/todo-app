@@ -3,11 +3,11 @@ using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 
 namespace WarrenSoftware.TodoApp.Modules.Todo;
 
-public class ArrangeItemWhenItemCreated : INotificationHandler<TodoItemCreated>
+public class ArrangeItemWhenItemCreatedCommand : INotificationHandler<TodoItemCreated>
 {
     private readonly ITodoListRepository _lists;
 
-    public ArrangeItemWhenItemCreated(ITodoListRepository lists)
+    public ArrangeItemWhenItemCreatedCommand(ITodoListRepository lists)
     {
         _lists = lists;
     }

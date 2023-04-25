@@ -1,5 +1,4 @@
 using MediatR;
-using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
