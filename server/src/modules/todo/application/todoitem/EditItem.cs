@@ -18,7 +18,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
         public string Notes { get; init; } = "";
     }
 
-    public class EditItemHandler : IRequestHandler<EditItemCommand, Unit>
+    public class EditItemHandler : IRequestHandler<EditItemCommand>
     {
         private readonly ITodoItemRepository _items;
         private readonly ITodoListRepository _lists;
@@ -31,15 +31,15 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             _uow = uow;
         }
 
-        public async Task<Unit> Handle(EditItemCommand request, CancellationToken cancellationToken)
+        public async Task Handle(EditItemCommand request, CancellationToken cancellationToken)
         {
             var list = await _lists.FindByIdAsync(request.ListId);
 
-            if (list is null) return Unit.Value;
+            if (list is null) return;
 
             var item = await _items.FindByIdAsync(request.ItemId);
 
-            if (item is null) return Unit.Value;
+            if (item is null) return;
 
             item.Rename(request.Name);
             item.WriteNotes(request.Notes);
@@ -49,7 +49,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
 
             await _uow.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return;
         }
     }
 }

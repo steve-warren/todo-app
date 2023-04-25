@@ -1,6 +1,3 @@
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using WarrenSoftware.TodoApp.Core.Domain;
@@ -23,7 +20,7 @@ namespace WarrenSoftware.TodoApp.Modules.Users
             _connection = connection;
         }
 
-        public async Task<Unit> Handle(GetUserProfileQuery request, CancellationToken cancellationToken)
+        public async Task Handle(GetUserProfileQuery request, CancellationToken cancellationToken)
         {
             using var command = new SqlCommand(@"
                 SELECT
@@ -42,8 +39,6 @@ namespace WarrenSoftware.TodoApp.Modules.Users
 
             await _connection.OpenAsync(cancellationToken);
             await command.StreamUtf8TextAsync(request.OutputStream, cancellationToken);
-
-            return Unit.Value;
         }
     }
 }

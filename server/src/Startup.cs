@@ -1,14 +1,8 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
@@ -56,7 +50,10 @@ public class Startup
         services.AddScoped<IIdentityService, HiLoIdentityService>();
         services.AddScoped<IHiLoStore, SqlHiLoStore>();
 
-        services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(typeof(Startup).GetTypeInfo().Assembly);
+        });
 
         services.AddDbContext<TodoDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());
         services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TodoApp")).EnableSensitiveDataLogging());

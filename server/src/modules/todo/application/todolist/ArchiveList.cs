@@ -1,7 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
-using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
@@ -13,7 +10,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
         public int ListId { get; init; }
     }
 
-    public class ArchiveListHandler : AsyncRequestHandler<ArchiveListCommand>
+    public class ArchiveListHandler : IRequestHandler<ArchiveListCommand>
     {
         private readonly ITodoListRepository _repository;
         private readonly ITodoUnitOfWork _uow;
@@ -24,7 +21,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             _uow = uow;
         }
 
-        protected override async Task Handle(ArchiveListCommand request, CancellationToken cancellationToken)
+        public async Task Handle(ArchiveListCommand request, CancellationToken cancellationToken)
         {
             var list = await _repository.FindByIdAsync(request.ListId);
 

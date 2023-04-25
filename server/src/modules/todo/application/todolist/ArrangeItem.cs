@@ -1,7 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
-using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
@@ -14,7 +11,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
         public int Position { get; init; }
     }
 
-    public class ArrangeItemHandler : AsyncRequestHandler<ArrangeItemCommand>
+    public class ArrangeItemHandler : IRequestHandler<ArrangeItemCommand>
     {
         private readonly ITodoListRepository _lists;
         private readonly ITodoUnitOfWork _uow;
@@ -25,7 +22,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             _uow = uow;
         }
 
-        protected override async Task Handle(ArrangeItemCommand request, CancellationToken cancellationToken)
+        public async Task Handle(ArrangeItemCommand request, CancellationToken cancellationToken)
         {
             var list = await _lists.FindByIdAsync(request.ListId);
 

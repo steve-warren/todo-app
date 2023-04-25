@@ -1,8 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
-using WarrenSoftware.TodoApp.Core.Domain;
-using WarrenSoftware.TodoApp.Core.Infrastructure;
 using WarrenSoftware.TodoApp.Modules.Users.Domain;
 using WarrenSoftware.TodoApp.Modules.Users.Infrastructure;
 
@@ -24,17 +20,15 @@ namespace WarrenSoftware.TodoApp.Modules.Users
             _uow = uow;
         }
 
-        public async Task<Unit> Handle(LogOutUserCommand request, CancellationToken cancellationToken)
+        public async Task Handle(LogOutUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _users.FindByIdAsync(request.UserId);
 
-            if (user is null) return Unit.Value;
+            if (user is null) return;
 
             user.LogOut();
 
             await _uow.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 }

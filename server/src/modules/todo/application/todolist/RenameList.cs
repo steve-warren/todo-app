@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
@@ -12,7 +10,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
         public string NewName { get; init; } = "";
     }
 
-    public class RenameListHandler : AsyncRequestHandler<RenameListCommand>
+    public class RenameListHandler : IRequestHandler<RenameListCommand>
     {
         private readonly ITodoListRepository _repository;
         private readonly ITodoUnitOfWork _uow;
@@ -23,7 +21,7 @@ namespace WarrenSoftware.TodoApp.Modules.Todo
             _uow = uow;
         }
 
-        protected override async Task Handle(RenameListCommand request, CancellationToken cancellationToken)
+        public async Task Handle(RenameListCommand request, CancellationToken cancellationToken)
         {
             var list = await _repository.FindByIdAsync(request.ListId);
 
