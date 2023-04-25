@@ -2,34 +2,33 @@ using MediatR;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo
+namespace WarrenSoftware.TodoApp.Modules.Todo;
+
+public class RenameListCommand : IRequest
 {
-    public class RenameListCommand : IRequest
+    public int ListId { get; init; }
+    public string NewName { get; init; } = "";
+}
+
+public class RenameListHandler : IRequestHandler<RenameListCommand>
+{
+    private readonly ITodoListRepository _repository;
+    private readonly ITodoUnitOfWork _uow;
+
+    public RenameListHandler(ITodoListRepository repository, ITodoUnitOfWork uow)
     {
-        public int ListId { get; init; }
-        public string NewName { get; init; } = "";
+        _repository = repository;
+        _uow = uow;
     }
 
-    public class RenameListHandler : IRequestHandler<RenameListCommand>
+    public async Task Handle(RenameListCommand request, CancellationToken cancellationToken)
     {
-        private readonly ITodoListRepository _repository;
-        private readonly ITodoUnitOfWork _uow;
+        var list = await _repository.FindByIdAsync(request.ListId);
 
-        public RenameListHandler(ITodoListRepository repository, ITodoUnitOfWork uow)
-        {
-            _repository = repository;
-            _uow = uow;
-        }
+        if (list is null) return;
 
-        public async Task Handle(RenameListCommand request, CancellationToken cancellationToken)
-        {
-            var list = await _repository.FindByIdAsync(request.ListId);
+        list.Rename(request.NewName);
 
-            if (list is null) return;
-            
-            list.Rename(request.NewName);
-
-            await _uow.SaveChangesAsync(cancellationToken);
-        }
+        await _uow.SaveChangesAsync(cancellationToken);
     }
 }

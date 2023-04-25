@@ -1,10 +1,7 @@
-using System.Threading.Tasks;
+namespace WarrenSoftware.TodoApp.Modules.Users.Domain;
 
-namespace WarrenSoftware.TodoApp.Modules.Users.Domain
+public interface IUserRepository
 {
-    public interface IUserRepository
-    {
-        Task<User> FindByIdAsync(int id);
-        Task<User> FindByUserNameAsync(string userName);
-    }
+    Task<User> FindByIdAsync(int id);
+    Task<User> FindByUserNameAsync(string userName);
 }

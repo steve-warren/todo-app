@@ -1,60 +1,56 @@
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
 using WarrenSoftware.TodoApp.Modules.Users.Domain;
 using WarrenSoftware.TodoApp.Modules.Users.Infrastructure;
 
-namespace WarrenSoftware.TodoApp.Modules.Users
+namespace WarrenSoftware.TodoApp.Modules.Users;
+
+public class AuthenticateCommand : IRequest<int>
 {
-    public class AuthenticateCommand : IRequest<int>
+    public string UserName { get; set; } = "";
+    public string PlaintextPassword { get; set; } = "";
+}
+
+public class AuthenticateHandler : IRequestHandler<AuthenticateCommand, int>
+{
+    private readonly IUserRepository _users;
+    private readonly IUserUnitOfWork _uow;
+    private readonly IAuthenticator _authenticator;
+    private readonly ISystemClock _clock;
+    private readonly ILogger<AuthenticateHandler> _logger;
+    private const int INVALID_USER_ID = -1;
+
+    public AuthenticateHandler(IUserRepository users, IUserUnitOfWork uow, IAuthenticator authenticator, ISystemClock clock, ILogger<AuthenticateHandler> logger)
     {
-        public string UserName { get; set; } = "";
-        public string PlaintextPassword { get; set; } = "";
+        _users = users;
+        _uow = uow;
+        _authenticator = authenticator;
+        _clock = clock;
+        _logger = logger;
     }
 
-    public class AuthenticateHandler : IRequestHandler<AuthenticateCommand, int>
+    public async Task<int> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
     {
-        private readonly IUserRepository _users;
-        private readonly IUserUnitOfWork _uow;
-        private readonly IAuthenticator _authenticator;
-        private readonly ISystemClock _clock;
-        private readonly ILogger<AuthenticateHandler> _logger;
-        private const int INVALID_USER_ID = -1;
+        _logger.LogInformation($"Authenticating user '{request.UserName}'.");
 
-        public AuthenticateHandler(IUserRepository users, IUserUnitOfWork uow, IAuthenticator authenticator, ISystemClock clock, ILogger<AuthenticateHandler> logger)
+        var user = await _users.FindByUserNameAsync(request.UserName);
+
+        if (user is not null)
         {
-            _users = users;
-            _uow = uow;
-            _authenticator = authenticator;
-            _clock = clock;
-            _logger = logger;
-        }
+            var authenticationResult = user.Login(_clock, _authenticator, request.PlaintextPassword);
 
-        public async Task<int> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Authenticating user '{request.UserName}'.");
+            await _uow.SaveChangesAsync(cancellationToken);
 
-            var user = await _users.FindByUserNameAsync(request.UserName);
-
-            if (user is not null)
+            if (authenticationResult == AuthenticationResult.Success)
             {
-                var authenticationResult = user.Login(_clock, _authenticator, request.PlaintextPassword);
-
-                await _uow.SaveChangesAsync(cancellationToken);
-
-                if (authenticationResult == AuthenticationResult.Success)
-                {
-                    _logger.LogInformation($"Authentication successful for user '{request.UserName}'.");
-                    return user.Id;
-                }
+                _logger.LogInformation($"Authentication successful for user '{request.UserName}'.");
+                return user.Id;
             }
-
-            _logger.LogInformation($"Authentication failed for user '{request.UserName}'.");
-
-            return INVALID_USER_ID;
         }
+
+        _logger.LogInformation($"Authentication failed for user '{request.UserName}'.");
+
+        return INVALID_USER_ID;
     }
 }

@@ -1,11 +1,8 @@
-using System.Threading.Tasks;
+namespace WarrenSoftware.TodoApp.Modules.Todo.Domain;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo.Domain
+public interface ITodoItemRepository
 {
-    public interface ITodoItemRepository
-    {
-        Task<TodoItem> FindByIdAsync(int id);
-        void Add(TodoItem item);
-        void Remove(TodoItem item);
-    }
+    Task<TodoItem> FindByIdAsync(int id);
+    void Add(TodoItem item);
+    void Remove(TodoItem item);
 }

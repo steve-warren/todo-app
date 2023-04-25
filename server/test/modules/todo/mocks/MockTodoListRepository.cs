@@ -1,20 +1,15 @@
-using System;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace todo_app_test
+namespace todo_app_test;
+
+public class MockTodoListRepository : MockRepository<TodoList>, ITodoListRepository
 {
-    public class MockTodoListRepository : MockRepository<TodoList>, ITodoListRepository
-    {
-        public MockTodoListRepository(IEnumerable<TodoList> items)
-            :base(items){ }
-            
-        public void Add(TodoList item) => Items.Add(item);
+    public MockTodoListRepository(IEnumerable<TodoList> items)
+        : base(items) { }
 
-        public Task<bool> ExistsAsync(int id) => Task.FromResult(Items.Exists(l => l.Id == id));
+    public void Add(TodoList item) => Items.Add(item);
 
-        public Task<TodoList> FindByIdAsync(int id) => Task.FromResult(Items.FirstOrDefault(l => l.Id == id));
-    }
+    public Task<bool> ExistsAsync(int id) => Task.FromResult(Items.Exists(l => l.Id == id));
+
+    public Task<TodoList> FindByIdAsync(int id) => Task.FromResult(Items.FirstOrDefault(l => l.Id == id));
 }

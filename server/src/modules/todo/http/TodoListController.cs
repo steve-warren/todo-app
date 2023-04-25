@@ -1,49 +1,47 @@
-using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo.Http
+namespace WarrenSoftware.TodoApp.Modules.Todo.Http;
+
+[ApiController]
+[Authorize]
+
+public class TodoListController : ControllerBase
 {
-    [ApiController]
-    [Authorize]
+    private readonly IMediator _mediator;
 
-    public class TodoListController : ControllerBase
+    public TodoListController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public TodoListController(IMediator mediator)
+    [HttpGet("api/todo/lists")]
+    public async Task GetAllTodoListsAsync()
+    {
+        Response.ContentType = "application/json";
+
+        var query = new GetAllListsQuery
         {
-            _mediator = mediator;
-        }
+            OwnerId = User.GetUserId(),
+            OutputStream = Response.Body
+        };
 
-        [HttpGet("api/todo/lists")]
-        public async Task GetAllTodoListsAsync()
+        await _mediator.Send(query);
+    }
+
+    [HttpPost("api/todo/lists")]
+    public async Task<IActionResult> AddListAsync([FromBody] AddTodoListViewModel model)
+    {
+        var command = new CreateListCommand
         {
-            Response.ContentType = "application/json";
+            Name = model.Name,
+            OwnerId = User.GetUserId()
+        };
 
-            var query = new GetAllListsQuery
-            {
-                OwnerId = User.GetUserId(),
-                OutputStream = Response.Body
-            };
+        var id = await _mediator.Send(command);
 
-            await _mediator.Send(query);
-        }
-
-        [HttpPost("api/todo/lists")]
-        public async Task<IActionResult> AddListAsync([FromBody] AddTodoListViewModel model)
-        {
-            var command = new CreateListCommand
-            {
-                Name = model.Name,
-                OwnerId = User.GetUserId()
-            };
-
-            var id = await _mediator.Send(command);
-
-            return Ok(id);
-        }
+        return Ok(id);
     }
 }

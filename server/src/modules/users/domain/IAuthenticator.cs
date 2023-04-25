@@ -1,8 +1,7 @@
-namespace WarrenSoftware.TodoApp.Modules.Users.Domain
+namespace WarrenSoftware.TodoApp.Modules.Users.Domain;
+
+public interface IAuthenticator
 {
-    public interface IAuthenticator
-    {
-        bool Authenticate(string plaintextPassword, string hash);
-        string HashPassword(string plaintextPassword);
-    }
+    bool Authenticate(string plaintextPassword, string hash);
+    string HashPassword(string plaintextPassword);
 }

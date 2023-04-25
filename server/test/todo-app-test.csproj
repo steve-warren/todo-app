@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>WarrenSoftware.Todo.Tests</RootNamespace>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

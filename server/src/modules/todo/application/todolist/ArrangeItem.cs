@@ -2,35 +2,34 @@ using MediatR;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 using WarrenSoftware.TodoApp.Modules.Todo.Infrastructure;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo
+namespace WarrenSoftware.TodoApp.Modules.Todo;
+
+public class ArrangeItemCommand : IRequest
 {
-    public class ArrangeItemCommand : IRequest
+    public int ListId { get; init; }
+    public int ItemId { get; init; }
+    public int Position { get; init; }
+}
+
+public class ArrangeItemHandler : IRequestHandler<ArrangeItemCommand>
+{
+    private readonly ITodoListRepository _lists;
+    private readonly ITodoUnitOfWork _uow;
+
+    public ArrangeItemHandler(ITodoListRepository lists, ITodoUnitOfWork uow)
     {
-        public int ListId { get; init; }
-        public int ItemId { get; init; }
-        public int Position { get; init; }
+        _lists = lists;
+        _uow = uow;
     }
 
-    public class ArrangeItemHandler : IRequestHandler<ArrangeItemCommand>
+    public async Task Handle(ArrangeItemCommand request, CancellationToken cancellationToken)
     {
-        private readonly ITodoListRepository _lists;
-        private readonly ITodoUnitOfWork _uow;
+        var list = await _lists.FindByIdAsync(request.ListId);
 
-        public ArrangeItemHandler(ITodoListRepository lists, ITodoUnitOfWork uow)
-        {
-            _lists = lists;
-            _uow = uow;
-        }
+        if (list is null) return;
 
-        public async Task Handle(ArrangeItemCommand request, CancellationToken cancellationToken)
-        {
-            var list = await _lists.FindByIdAsync(request.ListId);
+        list.ArrangeItem(request.ItemId, request.Position);
 
-            if (list is null) return;
-
-            list.ArrangeItem(request.ItemId, request.Position);
-
-            await _uow.SaveChangesAsync(cancellationToken);
-        }
+        await _uow.SaveChangesAsync(cancellationToken);
     }
 }

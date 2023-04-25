@@ -1,10 +1,9 @@
 using WarrenSoftware.TodoApp.Modules.Users.Domain;
 
-namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure
+namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure;
+
+public sealed class BCryptAuthenticator : IAuthenticator
 {
-    public sealed class BCryptAuthenticator : IAuthenticator
-    {
-        public bool Authenticate(string plaintextPassword, string hash) => BCrypt.Net.BCrypt.EnhancedVerify(text: plaintextPassword, hash: hash);
-        public string HashPassword(string plaintextPassword) => BCrypt.Net.BCrypt.EnhancedHashPassword(inputKey: plaintextPassword);
-    }
+    public bool Authenticate(string plaintextPassword, string hash) => BCrypt.Net.BCrypt.EnhancedVerify(text: plaintextPassword, hash: hash);
+    public string HashPassword(string plaintextPassword) => BCrypt.Net.BCrypt.EnhancedHashPassword(inputKey: plaintextPassword);
 }

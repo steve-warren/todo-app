@@ -1,9 +1,6 @@
-using System;
+namespace WarrenSoftware.TodoApp.Modules.Todo.Http;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo.Http
+public class AddTodoListViewModel
 {
-    public class AddTodoListViewModel
-    {
-        public string Name { get; set; } = "";
-    }
+    public string Name { get; set; } = "";
 }

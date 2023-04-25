@@ -1,9 +1,8 @@
 using WarrenSoftware.TodoApp.Core.Infrastructure;
 
-namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure
+namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure;
+
+public interface IUserUnitOfWork : IUnitOfWork
 {
-    public interface IUserUnitOfWork : IUnitOfWork
-    {
-        // no-op
-    }
+    // no-op
 }

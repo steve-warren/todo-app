@@ -1,33 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using WarrenSoftware.TodoApp.Core.Domain;
 using WarrenSoftware.TodoApp.Core.Infrastructure;
 using WarrenSoftware.TodoApp.Modules.Users.Domain;
 
-namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure
+namespace WarrenSoftware.TodoApp.Modules.Users.Infrastructure;
+
+public class UserDbContext : DbContextBase, IUserUnitOfWork
 {
-    public class UserDbContext : DbContextBase, IUserUnitOfWork
+    public UserDbContext(DbContextOptions<UserDbContext> options, IEventBus eventBus) : base(options, eventBus) { }
+
+    public DbSet<User> Users { get; private set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public UserDbContext(DbContextOptions<UserDbContext> options, IEventBus eventBus) : base(options, eventBus) { }
+        var users = modelBuilder.Entity<User>();
 
-        public DbSet<User> Users { get; private set; }
+        users.Property(e => e.Id)
+                 .HasColumnName("Id")
+                 .ValueGeneratedNever();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            var users = modelBuilder.Entity<User>();
-            
-            users.Property(e => e.Id)
-                     .HasColumnName("Id")
-                     .ValueGeneratedNever();
+        users.Property<string>("_hashedPassword")
+             .HasColumnName("HashedPassword");
 
-            users.Property<string>("_hashedPassword")
-                 .HasColumnName("HashedPassword");
-
-            users.ToTable("Users");
-        }
+        users.ToTable("Users");
     }
 }

@@ -1,15 +1,14 @@
 using WarrenSoftware.TodoApp.Modules.Users.Domain;
 
-namespace todo_app_test
-{
-    public class MockAuthenticator : IAuthenticator
-    {
-        public bool AuthenticationResultShouldBe { get; init; }
-        public bool Authenticate(string plaintextPassword, string hash) => AuthenticationResultShouldBe;
+namespace todo_app_test;
 
-        public string HashPassword(string plaintextPassword)
-        {
-            return "";    
-        }
+public class MockAuthenticator : IAuthenticator
+{
+    public bool AuthenticationResultShouldBe { get; init; }
+    public bool Authenticate(string plaintextPassword, string hash) => AuthenticationResultShouldBe;
+
+    public string HashPassword(string plaintextPassword)
+    {
+        return "";
     }
 }

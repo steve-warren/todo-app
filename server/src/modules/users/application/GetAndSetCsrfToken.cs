@@ -1,36 +1,31 @@
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
-namespace WarrenSoftware.TodoApp.Modules.Users
+namespace WarrenSoftware.TodoApp.Modules.Users;
+
+public class GetAndSetCsrfToken : IRequest<string?>
 {
-    public class GetAndSetCsrfToken : IRequest<string?>
+    public int UserId { get; init; }
+}
+
+public class GetAndSetCsrfTokenHandler : IRequestHandler<GetAndSetCsrfToken, string?>
+{
+    private readonly IAntiforgery _antiforgery;
+    private readonly ILogger<GetAndSetCsrfTokenHandler> _logger;
+    private readonly HttpContext _httpContext;
+
+    public GetAndSetCsrfTokenHandler(IAntiforgery antiforgery, IHttpContextAccessor httpContextAccessor, ILogger<GetAndSetCsrfTokenHandler> logger)
     {
-        public int UserId { get; init; }
+        _antiforgery = antiforgery;
+        _httpContext = httpContextAccessor.HttpContext;
+        _logger = logger;
     }
-
-    public class GetAndSetCsrfTokenHandler : IRequestHandler<GetAndSetCsrfToken,string?>
+    public Task<string?> Handle(GetAndSetCsrfToken request, CancellationToken cancellationToken)
     {
-        private readonly IAntiforgery _antiforgery;
-        private readonly ILogger<GetAndSetCsrfTokenHandler> _logger;
-        private readonly HttpContext _httpContext;
+        _logger.LogInformation($"CSRF token requested for user '{request.UserId}'.");
 
-        public GetAndSetCsrfTokenHandler(IAntiforgery antiforgery, IHttpContextAccessor httpContextAccessor, ILogger<GetAndSetCsrfTokenHandler> logger)
-        {
-            _antiforgery = antiforgery;
-            _httpContext = httpContextAccessor.HttpContext;
-            _logger = logger;
-        }
-        public Task<string?> Handle(GetAndSetCsrfToken request, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"CSRF token requested for user '{request.UserId}'.");
-            
-            var tokens = _antiforgery.GetAndStoreTokens(_httpContext);
+        var tokens = _antiforgery.GetAndStoreTokens(_httpContext);
 
-            return Task.FromResult(tokens.RequestToken);
-        }
+        return Task.FromResult(tokens.RequestToken);
     }
 }

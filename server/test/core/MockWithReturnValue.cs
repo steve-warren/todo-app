@@ -1,9 +1,8 @@
 
-namespace todo_app_test
+namespace todo_app_test;
+
+public abstract class MockWithReturnValue<T>
 {
-    public abstract class MockWithReturnValue<T>
-    {
-        public virtual void SetValue(T value) => ReturnValue = value;
-        public T ReturnValue { get; protected set; }
-    }
+    public virtual void SetValue(T value) => ReturnValue = value;
+    public T ReturnValue { get; protected set; }
 }

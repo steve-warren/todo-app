@@ -1,9 +1,6 @@
-using System;
+namespace WarrenSoftware.TodoApp.Core.Infrastructure;
 
-namespace WarrenSoftware.TodoApp.Core.Infrastructure
+public interface ISystemClock
 {
-    public interface ISystemClock
-    {
-        DateTimeOffset Now();
-    }
+    DateTimeOffset Now();
 }

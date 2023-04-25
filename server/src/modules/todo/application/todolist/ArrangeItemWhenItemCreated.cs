@@ -1,26 +1,23 @@
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using WarrenSoftware.TodoApp.Modules.Todo.Domain;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo
+namespace WarrenSoftware.TodoApp.Modules.Todo;
+
+public class ArrangeItemWhenItemCreated : INotificationHandler<TodoItemCreated>
 {
-    public class ArrangeItemWhenItemCreated : INotificationHandler<TodoItemCreated>
+    private readonly ITodoListRepository _lists;
+
+    public ArrangeItemWhenItemCreated(ITodoListRepository lists)
     {
-        private readonly ITodoListRepository _lists;
+        _lists = lists;
+    }
 
-        public ArrangeItemWhenItemCreated(ITodoListRepository lists)
-        {
-            _lists = lists;
-        }
+    public async Task Handle(TodoItemCreated notification, CancellationToken cancellationToken)
+    {
+        var list = await _lists.FindByIdAsync(notification.ListId);
 
-        public async Task Handle(TodoItemCreated notification, CancellationToken cancellationToken)
-        {
-            var list = await _lists.FindByIdAsync(notification.ListId);
+        if (list is null) return;
 
-            if (list is null) return;
-
-            list.AddItem(notification.ItemId);
-        }
+        list.AddItem(notification.ItemId);
     }
 }

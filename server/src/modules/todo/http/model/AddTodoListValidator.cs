@@ -1,12 +1,11 @@
 using FluentValidation;
 
-namespace WarrenSoftware.TodoApp.Modules.Todo.Http
+namespace WarrenSoftware.TodoApp.Modules.Todo.Http;
+
+public class AddTodoListValidator : AbstractValidator<AddTodoListViewModel>
 {
-    public class AddTodoListValidator : AbstractValidator<AddTodoListViewModel>
+    public AddTodoListValidator()
     {
-        public AddTodoListValidator()
-        {
-            RuleFor(model => model.Name).NotEmpty();
-        }
+        RuleFor(model => model.Name).NotEmpty();
     }
 }
